@@ -3,303 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TibiaZone | Rubinot Edition</title>
+    <title>TibiaZone - Manager Pro</title>
     <style>
         :root {
-            --bg-body: #050505;
-            --bg-card: #121212;
-            --bg-input: #1a1a1a;
-            --rubinot-red: #e63946; /* Vermelho Rubinot */
-            --tibia-gold: #b9935a;
-            --text-main: #e0e0e0;
-            --text-dim: #888;
-            --border: #252525;
+            --bg-dark: #0a0a0a;
+            --panel-bg: #1a1a1a;
+            --border-color: #3d3d3d;
+            --accent-gold: #b9935a;
+            --text-main: #e0d0b0;
+            --text-muted: #888;
+            --danger: #a83232;
+            --success: #4a8a4a;
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--bg-body);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
             color: var(--text-main);
             margin: 0;
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        /* --- LOGIN --- */
+        /* --- LOGIN OVERLAY --- */
         #login-screen {
             position: fixed;
-            inset: 0;
-            background: var(--bg-body);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            z-index: 1000;
         }
 
-        .login-card {
-            background: var(--bg-card);
-            padding: 40px;
-            border-radius: 12px;
-            border-top: 4px solid var(--rubinot-red);
+        .login-box {
+            background: var(--panel-bg);
+            padding: 2rem;
+            border: 2px solid var(--accent-gold);
+            border-radius: 8px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(185, 147, 90, 0.2);
         }
 
-        /* --- LAYOUT PRINCIPAL --- */
-        #app-content { display: none; width: 100%; max-width: 1100px; padding: 20px; }
+        /* --- MAIN APP LAYOUT --- */
+        #app-content {
+            display: none;
+            width: 95%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
 
         header {
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 30px;
         }
 
-        h1 { font-size: 1.5rem; letter-spacing: 2px; }
-        h1 span { color: var(--rubinot-red); font-weight: bold; }
-
-        .main-grid {
+        .grid-container {
             display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 25px;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
         }
 
         .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-        }
-
-        .card-title {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--text-dim);
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        .card-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-
-        /* --- LOOT GRID (SANGUINE SET) --- */
-        .loot-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 15px;
-        }
-
-        .loot-item {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .loot-item:hover { border-color: var(--rubinot-red); transform: translateY(-3px); }
-        .loot-item img { width: 32px; height: 32px; image-rendering: pixelated; margin-bottom: 5px; }
-        .loot-item span { display: block; font-size: 10px; color: var(--text-dim); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-
-        /* --- INPUTS E BOTOES --- */
-        input {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            color: white;
-            padding: 12px;
-            border-radius: 6px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            background: var(--rubinot-red);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
+        .card-header {
+            color: var(--accent-gold);
             font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 10px;
+        }
+
+        /* --- FORMS & INPUTS --- */
+        input, select, button {
+            background: #252525;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        button {
             cursor: pointer;
+            font-weight: bold;
             transition: 0.3s;
         }
 
-        .btn:hover { opacity: 0.8; }
+        .btn-gold {
+            background: var(--accent-gold);
+            color: black;
+        }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { text-align: left; font-size: 0.75rem; color: var(--text-dim); padding: 10px; border-bottom: 1px solid var(--border); }
-        td { padding: 12px 10px; border-bottom: 1px solid #1a1a1a; font-size: 0.9rem; }
+        .btn-gold:hover { background: #d4ae75; }
 
-        .badge { background: #1a1a1a; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); font-size: 0.8rem; }
+        /* --- TABLES --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #222;
+        }
+
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 900px) {
+            .grid-container { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="login-card">
-            <h2 style="color:white">RUBINOT <span style="color:var(--rubinot-red)">ZONE</span></h2>
-            <p style="color:var(--text-dim); font-size: 0.9rem;">Área Restrita - Insira a Chave</p>
-            <input type="password" id="pass-input" placeholder="Senha do Time..." style="text-align: center; margin-bottom: 15px;">
-            <button class="btn" onclick="checkPass()" style="width: 100%">ACESSAR PAINEL</button>
+        <div class="login-box">
+            <h2 style="color: var(--accent-gold)">TIBIAZONE ACCESS</h2>
+            <p style="color: var(--text-muted)">Insira a chave de acesso do DreamTeam</p>
+            <input type="password" id="pass-input" placeholder="Senha aqui...">
+            <br><br>
+            <button class="btn-gold" onclick="checkPass()" style="width: 100%">ENTRAR NO SISTEMA</button>
         </div>
     </div>
 
     <div id="app-content">
         <header>
-            <h1>RUBINOT<span>ZONE</span></h1>
-            <button onclick="location.reload()" style="background:none; border:none; color:var(--text-dim); cursor:pointer">Logout</button>
+            <h1>TibiaZone <span style="font-weight: lighter; color: var(--text-muted)">| Manager</span></h1>
+            <button onclick="logout()" style="background: transparent; border: none; color: var(--danger); cursor: pointer">Sair</button>
         </header>
 
-        <div class="main-grid">
-            <div class="left-col">
+        <div class="grid-container">
+            <main>
                 <div class="card">
-                    <div class="card-title">Sanguine Set Drop List</div>
-                    <div class="loot-container" id="loot-grid">
-                        </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Registrar Activity</div>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="run-name" placeholder="Ex: Hunt Bakragore">
-                        <input type="number" id="run-scrolls" placeholder="Scrolls">
-                        <button class="btn" onclick="addRun()">SALVAR</button>
+                    <div class="card-header">Registrar Nova Run</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                        <input type="text" id="run-name" placeholder="Nome da Run (Ex: Soul War)">
+                        <input type="number" id="run-scrolls" placeholder="Scrolls Dropados">
+                        <button class="btn-gold" onclick="addRun()">ADICIONAR</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">Histórico de Drops</div>
+                    <div class="card-header">Histórico de Atividades</div>
                     <table id="run-table">
                         <thead>
                             <tr>
                                 <th>DATA</th>
-                                <th>LOCAL</th>
+                                <th>NOME</th>
                                 <th>SCROLLS</th>
                                 <th>STACKS</th>
-                                <th></th>
+                                <th>AÇÃO</th>
                             </tr>
                         </thead>
                         <tbody id="run-list"></tbody>
                     </table>
                 </div>
-            </div>
+            </main>
 
-            <div class="right-col">
+            <aside>
                 <div class="card">
-                    <div class="card-title">Profit Total</div>
-                    <div id="total-stacks" style="font-size: 2rem; font-weight: bold; color: var(--rubinot-red)">0.0</div>
-                    <div style="color: var(--text-dim); font-size: 0.8rem;">Stacks acumuladas</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Dream Team</div>
-                    <div style="display: flex; gap: 5px; margin-bottom: 15px;">
-                        <input type="text" id="player-name" placeholder="Nick...">
-                        <button class="btn" onclick="addPlayer()" style="padding: 10px;">+</button>
+                    <div class="card-header">Gestão de Players</div>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="text" id="player-name" placeholder="Novo Player..." style="flex: 1">
+                        <button class="btn-gold" onclick="addPlayer()">+</button>
                     </div>
-                    <div id="player-list" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                    <div id="player-chips" style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 5px;"></div>
                 </div>
-            </div>
+
+                <div class="card" style="border-color: #444;">
+                    <div class="card-header">Resumo de Stacks</div>
+                    <div id="stack-summary">
+                        </div>
+                </div>
+            </aside>
         </div>
     </div>
 
     <script>
+        // --- CONFIGURAÇÃO DE ACESSO ---
         const SENHAS = ["dreamteam2026", "tibia123"];
-        
-        // Base de itens Sanguine do Wiki
-        const SANGUINE_ITEMS = [
-            { name: "Sanguine Blade", img: "https://www.tibiawiki.com.br/images/8/8a/Sanguine_Blade.gif" },
-            { name: "Sanguine Axe", img: "https://www.tibiawiki.com.br/images/3/30/Sanguine_Axe.gif" },
-            { name: "Sanguine Mace", img: "https://www.tibiawiki.com.br/images/e/e0/Sanguine_Mace.gif" },
-            { name: "Sanguine Bow", img: "https://www.tibiawiki.com.br/images/6/60/Sanguine_Bow.gif" },
-            { name: "Sanguine Rod", img: "https://www.tibiawiki.com.br/images/5/52/Sanguine_Rod.gif" },
-            { name: "Sanguine Wand", img: "https://www.tibiawiki.com.br/images/d/df/Sanguine_Wand.gif" },
-            { name: "Sanguine Cuirass", img: "https://www.tibiawiki.com.br/images/e/e7/Sanguine_Cuirass.gif" },
-            { name: "Sanguine Legs", img: "https://www.tibiawiki.com.br/images/4/4b/Sanguine_Legs.gif" },
-            { name: "Sanguine Boots", img: "https://www.tibiawiki.com.br/images/7/7b/Sanguine_Boots.gif" },
-            { name: "Sanguine Mask", img: "https://www.tibiawiki.com.br/images/e/e0/Sanguine_Mask.gif" }
-        ];
 
-        let runs = JSON.parse(localStorage.getItem('rb_runs')) || [];
-        let players = JSON.parse(localStorage.getItem('rb_players')) || [];
+        let runs = JSON.parse(localStorage.getItem('tz_runs')) || [];
+        let players = JSON.parse(localStorage.getItem('tz_players')) || [];
 
         function checkPass() {
-            if (SENHAS.includes(document.getElementById('pass-input').value)) {
+            const input = document.getElementById('pass-input').value;
+            if (SENHAS.includes(input)) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-content').style.display = 'block';
                 renderAll();
-            } else { alert("Acesso negado."); }
+            } else {
+                alert("Senha incorreta, guerreiro!");
+            }
         }
 
-        function initLoot() {
-            const grid = document.getElementById('loot-grid');
-            grid.innerHTML = SANGUINE_ITEMS.map(item => `
-                <div class="loot-item" onclick="alert('Drop de ${item.name} registrado!')">
-                    <img src="${item.img}" alt="${item.name}">
-                    <span>${item.name.replace('Sanguine ', '')}</span>
-                </div>
-            `).join('');
+        function logout() {
+            location.reload();
         }
 
+        // --- LÓGICA DE DADOS ---
         function addRun() {
             const name = document.getElementById('run-name').value;
             const scrolls = document.getElementById('run-scrolls').value;
-            if(!name || !scrolls) return;
 
-            runs.push({
+            if(!name || !scrolls) return alert("Preencha tudo!");
+
+            const newRun = {
                 id: Date.now(),
                 date: new Date().toLocaleDateString('pt-BR'),
-                name,
+                name: name,
                 scrolls: parseInt(scrolls),
-                stacks: (parseInt(scrolls) / 10).toFixed(1)
-            });
-            save(); renderAll();
+                stacks: (parseInt(scrolls) / 10).toFixed(1) // Exemplo de cálculo
+            };
+
+            runs.push(newRun);
+            save();
+            renderAll();
             document.getElementById('run-name').value = '';
             document.getElementById('run-scrolls').value = '';
         }
 
         function addPlayer() {
-            const p = document.getElementById('player-name').value;
-            if(p && !players.includes(p)) {
-                players.push(p);
-                save(); renderAll();
+            const pName = document.getElementById('player-name').value;
+            if(pName && !players.includes(pName)) {
+                players.push(pName);
+                save();
+                renderAll();
                 document.getElementById('player-name').value = '';
             }
         }
 
-        function removeRun(id) { runs = runs.filter(r => r.id !== id); save(); renderAll(); }
-        function removePlayer(n) { players = players.filter(p => p !== n); save(); renderAll(); }
-        function save() { 
-            localStorage.setItem('rb_runs', JSON.stringify(runs)); 
-            localStorage.setItem('rb_players', JSON.stringify(players)); 
+        function removeRun(id) {
+            runs = runs.filter(r => r.id !== id);
+            save();
+            renderAll();
         }
 
+        function removePlayer(name) {
+            players = players.filter(p => p !== name);
+            save();
+            renderAll();
+        }
+
+        function save() {
+            localStorage.setItem('tz_runs', JSON.stringify(runs));
+            localStorage.setItem('tz_players', JSON.stringify(players));
+        }
+
+        // --- RENDERIZAÇÃO ---
         function renderAll() {
-            initLoot();
+            // Render Runs
             const list = document.getElementById('run-list');
             list.innerHTML = runs.map(r => `
                 <tr>
                     <td>${r.date}</td>
                     <td>${r.name}</td>
                     <td>${r.scrolls}</td>
-                    <td style="color: var(--rubinot-red); font-weight:bold">${r.stacks}</td>
-                    <td><button onclick="removeRun(${r.id})" style="background:none; border:none; color:#444; cursor:pointer">×</button></td>
+                    <td style="color: var(--accent-gold)">${r.stacks}</td>
+                    <td><button onclick="removeRun(${r.id})" style="color: var(--danger); border: none; background: none;">[x]</button></td>
                 </tr>
             `).join('');
 
-            const pList = document.getElementById('player-list');
-            pList.innerHTML = players.map(p => `
-                <div class="badge">${p} <span onclick="removePlayer('${p}')" style="margin-left:5px; cursor:pointer; color:var(--rubinot-red)">×</span></div>
+            // Render Players
+            const pDiv = document.getElementById('player-chips');
+            pDiv.innerHTML = players.map(p => `
+                <span style="background: #333; padding: 4px 10px; border-radius: 15px; font-size: 0.8rem; border: 1px solid #444">
+                    ${p} <span onclick="removePlayer('${p}')" style="cursor:pointer; margin-left:5px; color: var(--danger)">×</span>
+                </span>
             `).join('');
 
-            const total = runs.reduce((acc, curr) => acc + parseFloat(curr.stacks), 0);
-            document.getElementById('total-stacks').innerText = total.toFixed(1);
+            // Resumo de Stacks
+            const totalScrolls = runs.reduce((acc, curr) => acc + curr.scrolls, 0);
+            document.getElementById('stack-summary').innerHTML = `
+                <div style="font-size: 1.5rem; color: var(--accent-gold)">${(totalScrolls / 10).toFixed(1)} <small style="font-size: 0.8rem; color: var(--text-muted)">Stacks Totais</small></div>
+                <div style="margin-top: 10px; color: var(--text-muted)">Total de Scrolls: ${totalScrolls}</div>
+            `;
         }
     </script>
 </body>
