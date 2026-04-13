@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dream Team — Boss Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0e0c08;
+    --bg-panel: #161310;
+    --bg-card: #1c1814;
+    --bg-row: #181410;
+    --bg-row-hover: #211d17;
+    --border: #2e2820;
+    --border-light: #3a3228;
+    --gold: #c8a84b;
+    --gold-dim: #8a7030;
+    --gold-bright: #e8c86a;
+    --text-main: #d4c9b0;
+    --text-dim: #7a7060;
+    --text-muted: #4a4438;
+    --green: #5a9e6a;
+    --red: #9e4a4a;
+    --shadow: 0 2px 16px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-main);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 15px;
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN SCREEN ── */
+  #login-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg-deep);
+  }
+  .login-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 40px 48px;
+    width: 340px;
+    text-align: center;
+  }
+  .login-box h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .login-box p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+    font-style: italic;
+  }
+  .login-box input[type="password"] {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    color: var(--text-main);
+    font-size: 15px;
+    font-family: 'Crimson Text', serif;
+    outline: none;
+    margin-bottom: 12px;
+    text-align: center;
+    letter-spacing: 4px;
+  }
+  .login-box input[type="password"]:focus { border-color: var(--gold-dim); }
+  .login-box button {
+    width: 100%;
+    padding: 10px;
+    background: var(--gold-dim);
+    color: #0e0c08;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .login-box button:hover { background: var(--gold); }
+  .login-error {
+    color: #c06060;
+    font-size: 13px;
+    margin-top: 10px;
+    display: none;
+    font-style: italic;
+  }
+
+  /* ── APP ── */
+  #app { display: none; }
+
+  .topbar {
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+  }
+  .topbar-title {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: 18px;
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-title span { color: var(--text-dim); font-size: 12px; letter-spacing: 1px; font-family: 'Crimson Text', serif; }
+  .btn-logout {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-dim);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .btn-logout:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 16px;
+    padding: 20px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  @media(max-width: 900px) {
+    .main-layout { grid-template-columns: 1fr; padding: 12px; }
+  }
+
+  /* ── PANELS ── */
+  .panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .panel-header h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-header h2 svg { opacity: 0.7; }
+
+  /* ── BOSS TABLE ── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--gold);
+    letter-spacing: 1px;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    background: var(--bg-card);
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-main);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg-row-hover); }
+  .td-date { color: var(--text-dim); font-size: 13px; white-space: nowrap; }
+  .td-boss { font-family: 'Cinzel', serif; font-size: 12px; color: var(--text-main); letter-spacing: 0.5px; }
+  .td-bag { color: var(--gold); font-size: 13px; white-space: pre-line; line-height: 1.6; }
+  .td-scroll { color: var(--text-dim); font-size: 13px; text-align: center; }
+  .td-scroll.has-name { color: var(--gold-bright); font-weight: 600; }
+  .btn-del {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .btn-del:hover { color: #c06060; }
+
+  /* ── RIGHT COLUMN ── */
+  .right-col { display: flex; flex-direction: column; gap: 14px; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .tab {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    flex: 1;
+    text-align: center;
+  }
+  .tab:hover { color: var(--gold-dim); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── STACKS ── */
+  .stack-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .stack-row:last-child { border-bottom: none; }
+  .stack-row:hover { background: var(--bg-row-hover); }
+  .stack-name { font-size: 14px; color: var(--text-main); }
+  .stack-rank { font-size: 11px; color: var(--text-muted); margin-right: 8px; font-family: 'Cinzel', serif; }
+  .stack-val { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 600; color: var(--gold); }
+  .stack-val.zero { color: var(--text-muted); }
+
+  /* ── LOOT ── */
+  .loot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .loot-row:last-child { border-bottom: none; }
+  .loot-name { color: var(--text-dim); }
+  .loot-qty { font-weight: 600; color: var(--gold); font-family: 'Cinzel', serif; font-size: 14px; }
+  .loot-qty.zero { color: var(--text-muted); }
+
+  /* ── PLAYER DROPS ── */
+  .pcard {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 18px;
+  }
+  .pcard:last-child { border-bottom: none; }
+  .pcard-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .pcard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 16px;
+  }
+  .pstat { font-size: 12px; color: var(--text-dim); }
+  .pstat b { color: var(--text-main); font-weight: 600; }
+
+  /* ── ADD BUTTON ── */
+  .btn-add {
+    background: transparent;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-add:hover { background: var(--gold-dim); color: #0e0c08; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 100;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+  }
+  .modal h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .form-row { margin-bottom: 14px; }
+  .form-row label {
+    display: block;
+    font-size: 11px;
+    font-family: 'Cinzel', serif;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+  .form-row input, .form-row textarea {
+    width: 100%;
+    background: var(--bg-deep);
+    border: 1px solid var(--border-light);
+    border-radius: 3px;
+    color: var(--text-main);
+    font-family: 'Crimson Text', serif;
+    font-size: 14px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-row input:focus, .form-row textarea:focus { border-color: var(--gold-dim); }
+  .form-row textarea { resize: vertical; min-height: 70px; line-height: 1.6; }
+  .scrolls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-hint { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 18px; line-height: 1.5; }
+  .modal-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .btn-cancel {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-dim);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 8px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-cancel:hover { border-color: var(--text-dim); color: var(--text-main); }
+  .btn-save {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-dim);
+    color: #0e0c08;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 8px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-save:hover { background: var(--gold); border-color: var(--gold); }
+
+  /* ── MANAGE PLAYERS MODAL ── */
+  .player-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 4px 12px 4px 14px;
+    font-size: 13px;
+    color: var(--text-main);
+    margin: 4px;
+  }
+  .player-tag button { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; line-height: 1; padding: 0; }
+  .player-tag button:hover { color: #c06060; }
+  .add-player-row { display: flex; gap: 8px; margin-top: 12px; }
+  .add-player-row input { flex: 1; }
+  .btn-small {
+    background: var(--gold-dim);
+    border: none;
+    color: #0e0c08;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn-small:hover { background: var(--gold); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    padding: 32px;
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  /* ── DIVIDER ── */
+  .section-sep {
+    height: 1px;
+    background: var(--border);
+    margin: 0 18px;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     LOGIN SCREEN
+════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>DREAM TEAM</h1>
+    <p>Boss Tracker &mdash; Acesso restrito</p>
+    <input type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" autofocus />
+    <button onclick="doLogin()">ENTRAR</button>
+    <div class="login-error" id="login-error">Senha incorreta.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     APP
+════════════════════════════════════════ -->
+<div id="app">
+
+  <div class="topbar">
+    <div class="topbar-title">
+      ☽ DREAM TEAM <span>BOSS TRACKER</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn-logout" onclick="openPlayersModal()" title="Gerenciar jogadores">⚙ Jogadores</button>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="main-layout">
+
+    <!-- LEFT: BOSS TABLE -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <h2>☩ Bosses</h2>
+          <button class="btn-add" onclick="openAddModal()">+ Adicionar Run</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:95px">Data</th>
+                <th style="width:130px">Boss</th>
+                <th>Bag You Covet</th>
+                <th style="width:75px;text-align:center">3pts</th>
+                <th style="width:75px;text-align:center">5pts</th>
+                <th style="width:75px;text-align:center">9pts</th>
+                <th style="width:80px;text-align:center">13pts</th>
+                <th style="width:80px;text-align:center">20pts</th>
+                <th style="width:36px"></th>
+              </tr>
+            </thead>
+            <tbody id="boss-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+      <div class="panel">
+        <div class="tabs">
+          <div class="tab active" onclick="showTab('stacks',this)">Stacks</div>
+          <div class="tab" onclick="showTab('loot',this)">Loot</div>
+          <div class="tab" onclick="showTab('players',this)">Players</div>
+        </div>
+        <div id="tab-stacks"></div>
+        <div id="tab-loot" style="display:none"></div>
+        <div id="tab-players" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ADD RUN MODAL
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <h3>✦ Adicionar Run de Boss</h3>
+    <div class="form-row">
+      <label>Data</label>
+      <input type="date" id="f-date" />
+    </div>
+    <div class="form-row">
+      <label>Boss</label>
+      <input type="text" id="f-boss" placeholder="ex: 4 Ess - Boss 22" />
+    </div>
+    <div class="form-row">
+      <label>Bag You Covet (loot especial)</label>
+      <div class="modal-hint">Uma linha por drop. Formato: <em>NomeJogador - Nome do Item</em><br>Exemplo: Guto - Grand Sanguine Bow</div>
+      <textarea id="f-bag" rows="3" placeholder="Guto - Grand Sanguine Bow&#10;Kevin - Grand Sanguine Claws"></textarea>
+    </div>
+    <div class="scrolls-grid">
+      <div class="form-row">
+        <label>Scroll 3pts</label>
+        <input type="text" id="f-s3" list="player-list" placeholder="nome ou vazio" />
+      </div>
+      <div class="form-row">
+        <label>Scroll 5pts</label>
+        <input type="text" id="f-s5" list="player-list" placeholder="nome ou vazio" />
+      </div>
+      <div class="form-row">
+        <label>Scroll 9pts</label>
+        <input type="text" id="f-s9" list="player-list" placeholder="nome ou vazio" />
+      </div>
+      <div class="form-row">
+        <label>Scroll 13pts</label>
+        <input type="text" id="f-s13" list="player-list" placeholder="nome ou vazio" />
+      </div>
+      <div class="form-row">
+        <label>Scroll 20pts</label>
+        <input type="text" id="f-s20" list="player-list" placeholder="nome ou vazio" />
+      </div>
+    </div>
+    <datalist id="player-list"></datalist>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeAddModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveRun()">Salvar Run</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MANAGE PLAYERS MODAL
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="players-modal">
+  <div class="modal" style="max-width:400px">
+    <h3>⚙ Gerenciar Jogadores</h3>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:14px;font-style:italic">
+      Jogadores cadastrados aparecem como sugestão ao adicionar runs.
+    </div>
+    <div id="player-tags"></div>
+    <div class="add-player-row">
+      <input type="text" id="new-player-input" placeholder="Nome do jogador" onkeydown="if(event.key==='Enter')addPlayer()" />
+      <button class="btn-small" onclick="addPlayer()">Adicionar</button>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-save" onclick="closePlayersModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  ⚠️  CONFIGURAÇÃO — ALTERE AQUI
+// ══════════════════════════════════════════════
+
+// SENHAS VÁLIDAS — adicione quantas quiser
+const SENHAS = [
+  "dreamteam2026",   // senha principal
+  "tibia123",        // senha alternativa
+];
+
+// ITENS DE LOOT conhecidos
+const LOOT_ITEMS = [
+  "Grand Sanguine Bow","Grand Sanguine Crossbow","Grand Sanguine Battleaxe",
+  "Grand Sanguine Claws","Grand Sanguine Hatchet","Grand Sanguine Razor",
+  "Grand Sanguine Blade","Grand Sanguine Coil","Grand Sanguine Rod",
+  "Grand Sanguine Bludgeon","Grand Sanguine Cudgel","Sanguine Rod",
+  "Sanguine Cudgel","Sanguine Claws","Sanguine Hatchet","Sanguine Razor",
+  "Sanguine Blade","Sanguine Bow","Sanguine Crossbow","Sanguine Battleaxe",
+];
+
+const SCROLL_PTS = { s3:3, s5:5, s9:9, s13:13, s20:20 };
+
+// ══════════════════════════════════════════════
+//  DADOS INICIAIS (suas runs reais)
+// ══════════════════════════════════════════════
+const INITIAL_RUNS = [
+  {id:1, date:"08/04/2026", boss:"4 Ess - Boss 21", bag:"Baeck - Sanguine Rod\nKevin - Sanguine Cudgel", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:2, date:"04/04/2026", boss:"4 Ess - Boss 20", bag:"", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:3, date:"01/04/2026", boss:"4 Ess - Boss 19", bag:"", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:4, date:"29/03/2026", boss:"4 Ess - Boss 18", bag:"", s3:"", s5:"", s9:"", s13:"Kevin", s20:""},
+  {id:5, date:"26/03/2026", boss:"4 Ess - Boss 17", bag:"Gall - Grand Sanguine Coil", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:6, date:"04/03/2026", boss:"4 Ess - Boss 16", bag:"", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:7, date:"01/03/2026", boss:"4 Ess - Boss 15", bag:"", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:8, date:"26/02/2026", boss:"4 Ess - Boss 14", bag:"", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:9, date:"23/02/2026", boss:"4 Ess - Boss 13", bag:"", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:10,date:"20/02/2026", boss:"4 Ess - Boss 12", bag:"", s3:"", s5:"", s9:"", s13:"", s20:""},
+  {id:11,date:"17/02/2026", boss:"4 Ess - Boss 11", bag:"", s3:"", s5:"", s9:"", s13:"Gall", s20:""},
+];
+const INITIAL_PLAYERS = ["Veyllor","Guto","Gall","Kevin","Baeck","Dracule"];
+
+// ══════════════════════════════════════════════
+//  ESTADO
+// ══════════════════════════════════════════════
+let runs = [];
+let players = [];
+let nextId = 100;
+
+function loadData() {
+  try {
+    const r = localStorage.getItem('dt_runs');
+    const p = localStorage.getItem('dt_players');
+    const n = localStorage.getItem('dt_nextid');
+    runs = r ? JSON.parse(r) : JSON.parse(JSON.stringify(INITIAL_RUNS));
+    players = p ? JSON.parse(p) : [...INITIAL_PLAYERS];
+    nextId = n ? parseInt(n) : 200;
+  } catch(e) {
+    runs = JSON.parse(JSON.stringify(INITIAL_RUNS));
+    players = [...INITIAL_PLAYERS];
+  }
+}
+
+function saveData() {
+  localStorage.setItem('dt_runs', JSON.stringify(runs));
+  localStorage.setItem('dt_players', JSON.stringify(players));
+  localStorage.setItem('dt_nextid', String(nextId));
+}
+
+// ══════════════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════════════
+function doLogin() {
+  const val = document.getElementById('pwd-input').value;
+  if (SENHAS.includes(val)) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadData();
+    render();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+  }
+}
+
+function doLogout() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pwd-input').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════
+//  COMPUTE STATS
+// ══════════════════════════════════════════════
+function computeStats() {
+  const stacks = {};
+  const loot = {};
+  const pdrops = {};
+  LOOT_ITEMS.forEach(i => loot[i] = 0);
+
+  // inicializar jogadores
+  players.forEach(p => {
+    if (!stacks[p]) stacks[p] = 0;
+    if (!pdrops[p]) pdrops[p] = { bags: 0, s3:0, s5:0, s9:0, s13:0, s20:0 };
+  });
+
+  runs.forEach(r => {
+    ['s3','s5','s9','s13','s20'].forEach(k => {
+      const p = (r[k] || '').trim();
+      if (!p) return;
+      if (stacks[p] === undefined) stacks[p] = 0;
+      stacks[p] += SCROLL_PTS[k];
+      if (!pdrops[p]) pdrops[p] = { bags:0, s3:0, s5:0, s9:0, s13:0, s20:0 };
+      pdrops[p][k]++;
+    });
+    if (r.bag) {
+      r.bag.split('\n').forEach(line => {
+        line = line.trim();
+        if (!line) return;
+        const dash = line.indexOf(' - ');
+        if (dash !== -1) {
+          const pname = line.slice(0, dash).trim();
+          const item = line.slice(dash + 3).trim();
+          if (loot[item] !== undefined) loot[item]++;
+          else loot[item] = (loot[item] || 0) + 1;
+          if (!pdrops[pname]) pdrops[pname] = { bags:0, s3:0, s5:0, s9:0, s13:0, s20:0 };
+          if (!stacks[pname] && stacks[pname] !== 0) stacks[pname] = 0;
+          pdrops[pname].bags++;
+        }
+      });
+    }
+  });
+  return { stacks, loot, pdrops };
+}
+
+// ══════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════
+function render() {
+  renderTable();
+  renderStacks();
+  renderLoot();
+  renderPlayers();
+  renderPlayerDatalist();
+}
+
+function renderTable() {
+  const tbody = document.getElementById('boss-tbody');
+  if (!runs.length) {
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state">Nenhuma run registrada ainda.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = runs.map(r => `
+    <tr>
+      <td class="td-date">${r.date}</td>
+      <td class="td-boss">${r.boss}</td>
+      <td class="td-bag">${r.bag ? r.bag : '<span style="color:var(--text-muted)">—</span>'}</td>
+      <td class="td-scroll ${r.s3 ? 'has-name' : ''}">${r.s3 || ''}</td>
+      <td class="td-scroll ${r.s5 ? 'has-name' : ''}">${r.s5 || ''}</td>
+      <td class="td-scroll ${r.s9 ? 'has-name' : ''}">${r.s9 || ''}</td>
+      <td class="td-scroll ${r.s13 ? 'has-name' : ''}">${r.s13 || ''}</td>
+      <td class="td-scroll ${r.s20 ? 'has-name' : ''}">${r.s20 || ''}</td>
+      <td><button class="btn-del" onclick="delRun(${r.id})" title="Remover">✕</button></td>
+    </tr>`).join('');
+}
+
+function renderStacks() {
+  const { stacks } = computeStats();
+  const sorted = Object.entries(stacks).sort((a, b) => b[1] - a[1]);
+  const el = document.getElementById('tab-stacks');
+  if (!sorted.length) {
+    el.innerHTML = '<div class="empty-state">Sem dados.</div>';
+    return;
+  }
+  el.innerHTML = sorted.map(([name, val], i) => `
+    <div class="stack-row">
+      <div style="display:flex;align-items:center">
+        <span class="stack-rank">${i+1}.</span>
+        <span class="stack-name">${name}</span>
+      </div>
+      <span class="stack-val ${val === 0 ? 'zero' : ''}">${val}</span>
+    </div>`).join('');
+}
+
+function renderLoot() {
+  const { loot } = computeStats();
+  const sorted = Object.entries(loot).sort((a, b) => b[1] - a[1]);
+  const el = document.getElementById('tab-loot');
+  el.innerHTML = sorted.map(([name, qty]) => `
+    <div class="loot-row">
+      <span class="loot-name">${name}</span>
+      <span class="loot-qty ${qty === 0 ? 'zero' : ''}">${qty}</span>
+    </div>`).join('');
+}
+
+function renderPlayers() {
+  const { stacks, pdrops } = computeStats();
+  const el = document.getElementById('tab-players');
+  const allPlayers = Object.keys(pdrops);
+  if (!allPlayers.length) {
+    el.innerHTML = '<div class="empty-state">Sem dados de jogadores.</div>';
+    return;
+  }
+  const sorted = allPlayers.sort((a, b) => (stacks[b]||0) - (stacks[a]||0));
+  el.innerHTML = sorted.map(name => {
+    const d = pdrops[name];
+    return `<div class="pcard">
+      <div class="pcard-name">${name}</div>
+      <div class="pcard-grid">
+        <div class="pstat">Bags <b>${d.bags}</b></div>
+        <div class="pstat">Scroll 3pts <b>${d.s3}</b></div>
+        <div class="pstat">Scroll 5pts <b>${d.s5}</b></div>
+        <div class="pstat">Scroll 9pts <b>${d.s9}</b></div>
+        <div class="pstat">Scroll 13pts <b>${d.s13}</b></div>
+        <div class="pstat">Scroll 20pts <b>${d.s20}</b></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderPlayerDatalist() {
+  document.getElementById('player-list').innerHTML =
+    players.map(p => `<option value="${p}">`).join('');
+}
+
+function renderPlayerTags() {
+  document.getElementById('player-tags').innerHTML =
+    players.map((p, i) => `
+      <span class="player-tag">${p}
+        <button onclick="removePlayer(${i})" title="Remover">✕</button>
+      </span>`).join('');
+}
+
+// ══════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════
+function showTab(name, el) {
+  ['stacks','loot','players'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+//  ADD / DELETE RUN
+// ══════════════════════════════════════════════
+function openAddModal() {
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('f-date').value = today;
+  document.getElementById('f-boss').value = '';
+  document.getElementById('f-bag').value = '';
+  ['s3','s5','s9','s13','s20'].forEach(k => document.getElementById('f-' + k).value = '');
+  document.getElementById('add-modal').classList.add('open');
+  setTimeout(() => document.getElementById('f-boss').focus(), 100);
+}
+
+function closeAddModal() {
+  document.getElementById('add-modal').classList.remove('open');
+}
+
+function saveRun() {
+  const rawDate = document.getElementById('f-date').value;
+  if (!rawDate) { alert('Informe a data.'); return; }
+  const d = new Date(rawDate + 'T12:00:00');
+  const date = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+  const run = {
+    id: nextId++,
+    date,
+    boss: document.getElementById('f-boss').value.trim() || '—',
+    bag: document.getElementById('f-bag').value.trim(),
+    s3: document.getElementById('f-s3').value.trim(),
+    s5: document.getElementById('f-s5').value.trim(),
+    s9: document.getElementById('f-s9').value.trim(),
+    s13: document.getElementById('f-s13').value.trim(),
+    s20: document.getElementById('f-s20').value.trim(),
+  };
+  runs.unshift(run);
+  saveData();
+  render();
+  closeAddModal();
+}
+
+function delRun(id) {
+  if (!confirm('Remover esta run?')) return;
+  runs = runs.filter(r => r.id !== id);
+  saveData();
+  render();
+}
+
+// ══════════════════════════════════════════════
+//  MANAGE PLAYERS
+// ══════════════════════════════════════════════
+function openPlayersModal() {
+  renderPlayerTags();
+  document.getElementById('players-modal').classList.add('open');
+}
+function closePlayersModal() {
+  document.getElementById('players-modal').classList.remove('open');
+  render();
+}
+function addPlayer() {
+  const input = document.getElementById('new-player-input');
+  const name = input.value.trim();
+  if (!name || players.includes(name)) { input.focus(); return; }
+  players.push(name);
+  saveData();
+  input.value = '';
+  renderPlayerTags();
+  renderPlayerDatalist();
+}
+function removePlayer(i) {
+  players.splice(i, 1);
+  saveData();
+  renderPlayerTags();
+}
+
+// ══════════════════════════════════════════════
+//  FECHAR MODAL AO CLICAR FORA
+// ══════════════════════════════════════════════
+document.getElementById('add-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeAddModal();
+});
+document.getElementById('players-modal').addEventListener('click', function(e) {
+  if (e.target === this) closePlayersModal();
+});
+</script>
+</body>
+</html>
