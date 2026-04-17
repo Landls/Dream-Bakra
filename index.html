@@ -9,35 +9,36 @@
 :root{--bg-deep:#0e0c08;--bg-panel:#161310;--bg-card:#1c1814;--bg-hover:#211d17;--border:#2e2820;--border-light:#3a3228;--gold:#c8a84b;--gold-dim:#8a7030;--gold-bright:#e8c86a;--text-main:#d4c9b0;--text-dim:#7a7060;--text-muted:#4a4438;--green:#4a8a5a;--red:#9e4a4a;--orange:#b87030}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg-deep);color:var(--text-main);font-family:'Crimson Text',Georgia,serif;font-size:15px;min-height:100vh}
-/* LOGIN */
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh}
-.login-box{background:var(--bg-panel);border:1px solid var(--border-light);border-radius:6px;padding:40px 48px;width:340px;text-align:center}
-.login-box h1{font-family:'Cinzel',serif;font-size:22px;color:var(--gold);letter-spacing:2px;margin-bottom:6px}
-.login-box p{font-size:13px;color:var(--text-dim);margin-bottom:28px;font-style:italic}
-.login-box input[type=password]{width:100%;padding:10px 14px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:4px;color:var(--text-main);font-size:15px;font-family:'Crimson Text',serif;outline:none;margin-bottom:12px;text-align:center;letter-spacing:4px}
-.login-box input[type=password]:focus{border-color:var(--gold-dim)}
-.login-btn{width:100%;padding:10px;background:var(--gold-dim);color:#0e0c08;font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;transition:background .2s}
-.login-btn:hover{background:var(--gold)}
-.login-error{color:#c06060;font-size:13px;margin-top:10px;display:none;font-style:italic}
-/* APP */
-#app{display:none}
+
+/* TOPBAR */
 .topbar{background:var(--bg-panel);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px;gap:16px}
 .topbar-title{font-family:'Cinzel',serif;color:var(--gold);font-size:18px;letter-spacing:3px;display:flex;align-items:center;gap:10px;white-space:nowrap}
 .topbar-title span{color:var(--text-dim);font-size:12px;letter-spacing:1px;font-family:'Crimson Text',serif}
 .topbar-right{display:flex;gap:8px;align-items:center}
+
+/* ADMIN BADGE */
+.admin-badge{background:#0a2a14;border:1px solid #1a4a2a;color:#5a9e6a;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:3px 10px;border-radius:20px}
+.btn-admin-login{background:transparent;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;padding:4px 6px;border-radius:3px;line-height:1;transition:color .2s;opacity:.4}
+.btn-admin-login:hover{color:var(--gold);opacity:1}
+.btn-logout{background:transparent;border:1px solid var(--border-light);color:var(--text-dim);font-size:12px;padding:5px 12px;border-radius:3px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px;transition:all .2s}
+.btn-logout:hover{border-color:var(--gold-dim);color:var(--gold)}
+
 /* PAGE TABS */
 .page-tabs{display:flex;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 24px;gap:4px}
 .page-tab{font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;color:var(--text-dim);padding:13px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
 .page-tab:hover{color:var(--gold-dim)}
 .page-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
 /* PAGES */
 .page{display:none;padding:20px 24px;max-width:1400px;margin:0 auto}
 .page.active{display:block}
 @media(max-width:700px){.page{padding:12px}}
+
 /* PANEL */
 .panel{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;overflow:hidden}
 .panel-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .panel-header h2{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);letter-spacing:2px}
+
 /* BOSS LAYOUT */
 .main-layout{display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start}
 @media(max-width:900px){.main-layout{grid-template-columns:1fr}}
@@ -52,6 +53,7 @@ tr:hover td{background:var(--bg-hover)}
 .td-bag{color:var(--gold);font-size:13px;white-space:pre-line;line-height:1.6}
 .td-scroll{color:var(--text-dim);font-size:13px;text-align:center}
 .td-scroll.has-name{color:var(--gold-bright);font-weight:600}
+
 /* SIDE TABS */
 .right-col{display:flex;flex-direction:column;gap:14px}
 .tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg-card)}
@@ -75,13 +77,13 @@ tr:hover td{background:var(--bg-hover)}
 .pcard-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 16px}
 .pstat{font-size:12px;color:var(--text-dim)}
 .pstat b{color:var(--text-main);font-weight:600}
+
 /* BUTTONS */
 .btn-add{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;padding:6px 14px;border-radius:3px;cursor:pointer;transition:all .2s}
 .btn-add:hover{background:var(--gold-dim);color:#0e0c08}
-.btn-logout{background:transparent;border:1px solid var(--border-light);color:var(--text-dim);font-size:12px;padding:5px 12px;border-radius:3px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px;transition:all .2s}
-.btn-logout:hover{border-color:var(--gold-dim);color:var(--gold)}
 .btn-del{background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:3px;line-height:1;transition:color .2s}
 .btn-del:hover{color:#c06060}
+
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
 .modal-overlay.open{display:flex}
@@ -107,6 +109,18 @@ tr:hover td{background:var(--bg-hover)}
 .btn-small{background:var(--gold-dim);border:none;color:#0e0c08;font-family:'Cinzel',serif;font-size:11px;font-weight:600;padding:8px 14px;border-radius:3px;cursor:pointer;white-space:nowrap}
 .btn-small:hover{background:var(--gold)}
 .empty-state{padding:32px;text-align:center;color:var(--text-muted);font-style:italic;font-size:14px}
+
+/* ADMIN LOGIN MODAL */
+.admin-modal{background:var(--bg-panel);border:1px solid var(--border-light);border-radius:6px;padding:32px 36px;width:100%;max-width:320px;margin:auto;text-align:center}
+.admin-modal h3{font-family:'Cinzel',serif;font-size:16px;color:var(--gold);letter-spacing:2px;margin-bottom:6px}
+.admin-modal p{font-size:13px;color:var(--text-dim);margin-bottom:24px;font-style:italic}
+.admin-modal input[type=password]{width:100%;padding:10px 14px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:4px;color:var(--text-main);font-size:15px;font-family:'Crimson Text',serif;outline:none;margin-bottom:12px;text-align:center;letter-spacing:4px}
+.admin-modal input[type=password]:focus{border-color:var(--gold-dim)}
+.admin-modal-btns{display:flex;gap:8px}
+.admin-modal-btns .btn-save{flex:1}
+.admin-modal-btns .btn-cancel{flex:1}
+.admin-err{color:#c06060;font-size:12px;margin-top:8px;min-height:18px;font-style:italic}
+
 /* HOT CUISINE */
 .hc-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}
 .hc-header h2{font-family:'Cinzel',serif;font-size:16px;color:var(--gold);letter-spacing:2px}
@@ -119,11 +133,12 @@ tr:hover td{background:var(--bg-hover)}
 .hc-qty-row label{font-size:12px;font-family:'Cinzel',serif;color:var(--text-dim);letter-spacing:1px;white-space:nowrap}
 .hc-qty-row input[type=number]{width:90px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:3px;color:var(--gold);font-family:'Cinzel',serif;font-size:15px;font-weight:600;padding:6px 10px;outline:none;text-align:center}
 .hc-qty-row input[type=number]:focus{border-color:var(--gold-dim)}
+.hc-qty-row input[type=number]:read-only{opacity:.6;cursor:default}
 .hc-filter-btns{display:flex;gap:6px;flex-wrap:wrap}
 .hc-fb{background:transparent;border:1px solid var(--border-light);color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:5px 12px;border-radius:3px;cursor:pointer;transition:all .2s}
 .hc-fb.active{background:var(--gold-dim);border-color:var(--gold-dim);color:#0e0c08}
 .hc-fb:hover:not(.active){border-color:var(--gold-dim);color:var(--gold)}
-.recipe-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+.recipe-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;margin-bottom:12px;overflow:hidden}
 .recipe-card.st-complete{border-color:#1a4a2a}
 .recipe-card.st-partial{border-color:#6a4a10}
 .recipe-card.st-missing{border-color:#6a2020}
@@ -135,11 +150,12 @@ tr:hover td{background:var(--bg-hover)}
 .recipe-runs-wrap{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted);font-family:'Cinzel',serif;letter-spacing:1px}
 .recipe-runs-input{width:55px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:3px;color:var(--gold);font-family:'Cinzel',serif;font-size:13px;padding:3px 6px;outline:none;text-align:center}
 .recipe-runs-input:focus{border-color:var(--gold-dim)}
+.recipe-runs-input:read-only{opacity:.6;cursor:default}
 .rpill{font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;padding:3px 10px;border-radius:20px;white-space:nowrap}
 .rpill.ok{background:#0a2a14;color:#5a9e6a;border:1px solid #1a4a2a}
 .rpill.partial{background:#2a1a00;color:#c8803a;border:1px solid #4a3010}
 .rpill.missing{background:#2a0a0a;color:#b05050;border:1px solid #6a2020}
-.rchevron{color:var(--text-dim);font-size:12px;transition:transform .2s;min-width:12px;text-align:center}
+.rchevron{color:var(--text-dim);font-size:12px;min-width:12px;text-align:center}
 .recipe-body{display:none;padding:0 18px 14px}
 .recipe-body.open{display:block}
 .ing-table{width:100%;border-collapse:collapse;margin-top:10px}
@@ -147,108 +163,120 @@ tr:hover td{background:var(--bg-hover)}
 .ing-table td{padding:7px 8px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
 .ing-table tr:last-child td{border-bottom:none}
 .ing-name{color:var(--text-main)}
-.ing-center{text-align:center}
+.ing-center{text-align:center;color:var(--text-dim)}
 .ing-need{color:var(--gold);font-family:'Cinzel',serif;font-weight:600;text-align:center}
-.ing-have-input{width:72px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:3px;color:var(--text-main);font-family:'Crimson Text',serif;font-size:14px;padding:4px 6px;outline:none;text-align:center;transition:border-color .2s}
+.ing-have-input{width:72px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:3px;color:var(--text-main);font-family:'Crimson Text',serif;font-size:14px;padding:4px 6px;outline:none;text-align:center}
 .ing-have-input:focus{border-color:var(--gold-dim)}
+.ing-have-input:read-only{opacity:.6;cursor:default}
+.ing-have-static{text-align:center;color:var(--text-main)}
 .ing-lack{font-family:'Cinzel',serif;font-weight:600;text-align:center}
 .ing-lack.ok{color:#5a9e6a}
 .ing-lack.bad{color:#b05050}
 .ing-bar-bg{width:80px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;display:inline-block}
-.ing-bar-fill{height:100%;border-radius:2px;transition:width .3s}
+.ing-bar-fill{height:100%;border-radius:2px}
+/* readonly mode — hide admin-only controls */
+body.readonly .admin-only{display:none!important}
+
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:var(--bg-deep)}
 ::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
 </style>
 </head>
-<body>
+<body class="readonly">
 
-<!-- ════ LOGIN ════ -->
-<div id="login-screen">
-  <div class="login-box">
-    <h1>DREAM TEAM</h1>
-    <p>Acesso restrito</p>
-    <input type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" autofocus>
-    <button class="login-btn" onclick="doLogin()">ENTRAR</button>
-    <div class="login-error" id="login-error">Senha incorreta.</div>
+<!-- ════ TOPBAR ════ -->
+<div class="topbar">
+  <div class="topbar-title">☽ DREAM TEAM <span>TRACKER</span></div>
+  <div class="topbar-right">
+    <!-- Botão discreto de admin — clique para entrar como admin -->
+    <button class="btn-admin-login admin-only-show" id="btn-admin-toggle" onclick="openAdminLogin()" title="Admin">☽</button>
+    <!-- Visível apenas quando logado como admin -->
+    <span class="admin-badge admin-only">Admin</span>
+    <button class="btn-logout admin-only" onclick="openPlayersModal()">⚙ Jogadores</button>
+    <button class="btn-logout admin-only" onclick="doAdminLogout()">Sair do admin</button>
   </div>
 </div>
 
-<!-- ════ APP ════ -->
-<div id="app">
-  <div class="topbar">
-    <div class="topbar-title">☽ DREAM TEAM <span>TRACKER</span></div>
-    <div class="topbar-right">
-      <button class="btn-logout" onclick="openPlayersModal()">⚙ Jogadores</button>
-      <button class="btn-logout" onclick="doLogout()">Sair</button>
-    </div>
-  </div>
+<!-- ════ PAGE TABS ════ -->
+<div class="page-tabs">
+  <div class="page-tab active" onclick="showPage('bosses',this)">☩ Boss Tracker</div>
+  <div class="page-tab" onclick="showPage('cuisine',this)">✦ Hot Cuisine Quest</div>
+</div>
 
-  <div class="page-tabs">
-    <div class="page-tab active" onclick="showPage('bosses',this)">☩ Boss Tracker</div>
-    <div class="page-tab" onclick="showPage('cuisine',this)">✦ Hot Cuisine Quest</div>
-  </div>
-
-  <!-- ════ BOSS TRACKER ════ -->
-  <div class="page active" id="page-bosses">
-    <div class="main-layout">
-      <div>
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Bosses</h2>
-            <button class="btn-add" onclick="openAddModal()">+ Adicionar Run</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr>
-                <th style="width:95px">Data</th><th style="width:130px">Boss</th><th>Bag You Covet</th>
-                <th style="width:75px;text-align:center">3pts</th><th style="width:75px;text-align:center">5pts</th>
-                <th style="width:75px;text-align:center">9pts</th><th style="width:80px;text-align:center">13pts</th>
-                <th style="width:80px;text-align:center">20pts</th><th style="width:36px"></th>
-              </tr></thead>
-              <tbody id="boss-tbody"></tbody>
-            </table>
-          </div>
+<!-- ════ BOSS TRACKER ════ -->
+<div class="page active" id="page-bosses">
+  <div class="main-layout">
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Bosses</h2>
+          <button class="btn-add admin-only" onclick="openAddModal()">+ Adicionar Run</button>
         </div>
-      </div>
-      <div class="right-col">
-        <div class="panel">
-          <div class="tabs">
-            <div class="tab active" onclick="showSideTab('stacks',this)">Stacks</div>
-            <div class="tab" onclick="showSideTab('loot',this)">Loot</div>
-            <div class="tab" onclick="showSideTab('players',this)">Players</div>
-          </div>
-          <div id="tab-stacks"></div>
-          <div id="tab-loot" style="display:none"></div>
-          <div id="tab-players" style="display:none"></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th style="width:95px">Data</th><th style="width:130px">Boss</th><th>Bag You Covet</th>
+              <th style="width:75px;text-align:center">3pts</th><th style="width:75px;text-align:center">5pts</th>
+              <th style="width:75px;text-align:center">9pts</th><th style="width:80px;text-align:center">13pts</th>
+              <th style="width:80px;text-align:center">20pts</th>
+              <th class="admin-only" style="width:36px"></th>
+            </tr></thead>
+            <tbody id="boss-tbody"></tbody>
+          </table>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- ════ HOT CUISINE ════ -->
-  <div class="page" id="page-cuisine">
-    <div class="hc-header">
-      <h2>✦ Hot Cuisine Quest — Supply Checker</h2>
-    </div>
-    <div class="hc-controls">
-      <div class="hc-qty-row">
-        <label>Bonecos alvo:</label>
-        <input type="number" id="hc-target" value="900" min="1" oninput="hcRender()">
+    <div class="right-col">
+      <div class="panel">
+        <div class="tabs">
+          <div class="tab active" onclick="showSideTab('stacks',this)">Stacks</div>
+          <div class="tab" onclick="showSideTab('loot',this)">Loot</div>
+          <div class="tab" onclick="showSideTab('players',this)">Players</div>
+        </div>
+        <div id="tab-stacks"></div>
+        <div id="tab-loot" style="display:none"></div>
+        <div id="tab-players" style="display:none"></div>
       </div>
-      <div class="hc-filter-btns">
-        <button class="hc-fb active" onclick="hcFilter('all',this)">Todos</button>
-        <button class="hc-fb" onclick="hcFilter('missing',this)">Faltando</button>
-        <button class="hc-fb" onclick="hcFilter('complete',this)">Completo</button>
-      </div>
-      <button class="btn-add" style="font-size:10px;padding:5px 12px" onclick="hcReset()">↺ Resetar estoque</button>
     </div>
-    <div class="hc-summary" id="hc-summary"></div>
-    <div id="hc-recipes"></div>
   </div>
 </div>
 
-<!-- ════ MODALS ════ -->
+<!-- ════ HOT CUISINE ════ -->
+<div class="page" id="page-cuisine">
+  <div class="hc-header">
+    <h2>✦ Hot Cuisine Quest — Supply Checker</h2>
+  </div>
+  <div class="hc-controls">
+    <div class="hc-qty-row">
+      <label>Bonecos alvo:</label>
+      <input type="number" id="hc-target" value="900" min="1" oninput="hcRender()">
+    </div>
+    <div class="hc-filter-btns">
+      <button class="hc-fb active" onclick="hcFilter('all',this)">Todos</button>
+      <button class="hc-fb" onclick="hcFilter('missing',this)">Faltando</button>
+      <button class="hc-fb" onclick="hcFilter('complete',this)">Completo</button>
+    </div>
+    <button class="btn-add admin-only" style="font-size:10px;padding:5px 12px" onclick="hcReset()">↺ Resetar estoque</button>
+  </div>
+  <div class="hc-summary" id="hc-summary"></div>
+  <div id="hc-recipes"></div>
+</div>
+
+<!-- ════ ADMIN LOGIN MODAL ════ -->
+<div class="modal-overlay" id="admin-login-modal">
+  <div class="admin-modal">
+    <h3>ADMIN</h3>
+    <p>Digite a senha para editar</p>
+    <input type="password" id="admin-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()">
+    <div class="admin-modal-btns">
+      <button class="btn-cancel" onclick="closeAdminLogin()">Cancelar</button>
+      <button class="btn-save" onclick="doAdminLogin()">Entrar</button>
+    </div>
+    <div class="admin-err" id="admin-err"></div>
+  </div>
+</div>
+
+<!-- ════ ADD RUN MODAL ════ -->
 <div class="modal-overlay" id="add-modal">
   <div class="modal">
     <h3>✦ Adicionar Run de Boss</h3>
@@ -274,6 +302,7 @@ tr:hover td{background:var(--bg-hover)}
   </div>
 </div>
 
+<!-- ════ PLAYERS MODAL ════ -->
 <div class="modal-overlay" id="players-modal">
   <div class="modal" style="max-width:400px">
     <h3>⚙ Gerenciar Jogadores</h3>
@@ -289,18 +318,13 @@ tr:hover td{background:var(--bg-hover)}
 
 <script>
 // ════════════════════════════════════════════
-//  CONFIGURAÇÃO — edite as senhas aqui
+//  ⚠️  CONFIGURAÇÃO — edite a senha admin aqui
 // ════════════════════════════════════════════
-const SENHAS = [
-  "dreamteam2026",
-  "tibia123",
-];
+const ADMIN_SENHA = "dreamteam2026";
 
-// ════════════════════════════════════════════
-//  HOT CUISINE — 14 receitas
-//  perItem = quantidade por 1 run (boneco)
-//  Você pode editar perItem de qualquer ingrediente
-// ════════════════════════════════════════════
+// ════ HOT CUISINE — 14 receitas ════
+// perItem = quantidade necessária por 1 boneco (run)
+// Edite os valores perItem conforme necessário
 const RECIPES = [
   {id:'r1',name:'Rotworm Stew',effect:'Restaura HP completamente',ingredients:[
     {name:'Piece of Meat',perItem:2},{name:'Vial of Beer',perItem:2},{name:'Potato',perItem:20},
@@ -347,7 +371,7 @@ const RECIPES = [
     {name:'Bottle of Bug Milk',perItem:1},{name:'Blessed Wooden Stake',perItem:1}]},
 ];
 
-// ════ Boss data ════
+// ════ DADOS INICIAIS ════
 const INITIAL_RUNS=[
   {id:1,date:"08/04/2026",boss:"4 Ess - Boss 21",bag:"Baeck - Sanguine Rod\nKevin - Sanguine Cudgel",s3:"",s5:"",s9:"",s13:"",s20:""},
   {id:2,date:"04/04/2026",boss:"4 Ess - Boss 20",bag:"",s3:"",s5:"",s9:"",s13:"",s20:""},
@@ -366,6 +390,7 @@ const SCROLL_PTS={s3:3,s5:5,s9:9,s13:13,s20:20};
 const LOOT_ITEMS=["Grand Sanguine Bow","Grand Sanguine Crossbow","Grand Sanguine Battleaxe","Grand Sanguine Claws","Grand Sanguine Hatchet","Grand Sanguine Razor","Grand Sanguine Blade","Grand Sanguine Coil","Grand Sanguine Rod","Grand Sanguine Bludgeon","Grand Sanguine Cudgel","Sanguine Rod","Sanguine Cudgel"];
 
 let runs=[],players=[],nextId=200;
+let isAdmin=false;
 let hcFilterMode='all';
 const hcOpen={};
 
@@ -377,29 +402,45 @@ function loadData(){
     nextId=parseInt(localStorage.getItem('dt_nextid')||'200');
   }catch(e){runs=JSON.parse(JSON.stringify(INITIAL_RUNS));players=[...INITIAL_PLAYERS];}
 }
-function saveData(){localStorage.setItem('dt_runs',JSON.stringify(runs));localStorage.setItem('dt_players',JSON.stringify(players));localStorage.setItem('dt_nextid',String(nextId));}
+function saveData(){
+  localStorage.setItem('dt_runs',JSON.stringify(runs));
+  localStorage.setItem('dt_players',JSON.stringify(players));
+  localStorage.setItem('dt_nextid',String(nextId));
+}
 function getInv(){try{return JSON.parse(localStorage.getItem('hc_inv')||'{}')}catch(e){return{}}}
 function saveInv(v){localStorage.setItem('hc_inv',JSON.stringify(v))}
 function getRunCounts(){try{return JSON.parse(localStorage.getItem('hc_rc')||'{}')}catch(e){return{}}}
 function saveRunCounts(v){localStorage.setItem('hc_rc',JSON.stringify(v))}
 
-// ════ LOGIN ════
-function doLogin(){
-  if(SENHAS.includes(document.getElementById('pwd-input').value)){
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('app').style.display='block';
-    loadData();renderBosses();hcRender();
+// ════ ADMIN AUTH ════
+function openAdminLogin(){
+  document.getElementById('admin-pwd').value='';
+  document.getElementById('admin-err').textContent='';
+  document.getElementById('admin-login-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('admin-pwd').focus(),100);
+}
+function closeAdminLogin(){document.getElementById('admin-login-modal').classList.remove('open');}
+
+function doAdminLogin(){
+  if(document.getElementById('admin-pwd').value===ADMIN_SENHA){
+    isAdmin=true;
+    document.body.classList.remove('readonly');
+    // Esconde o botão de login, mostra controles admin
+    document.getElementById('btn-admin-toggle').style.display='none';
+    closeAdminLogin();
+    renderBosses();hcRender();
   }else{
-    document.getElementById('login-error').style.display='block';
-    document.getElementById('pwd-input').value='';
-    document.getElementById('pwd-input').focus();
+    document.getElementById('admin-err').textContent='Senha incorreta.';
+    document.getElementById('admin-pwd').value='';
+    document.getElementById('admin-pwd').focus();
   }
 }
-function doLogout(){
-  document.getElementById('app').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('pwd-input').value='';
-  document.getElementById('login-error').style.display='none';
+
+function doAdminLogout(){
+  isAdmin=false;
+  document.body.classList.add('readonly');
+  document.getElementById('btn-admin-toggle').style.display='';
+  renderBosses();hcRender();
 }
 
 // ════ NAVIGATION ════
@@ -440,25 +481,31 @@ function renderTable(){
   const tbody=document.getElementById('boss-tbody');
   if(!runs.length){tbody.innerHTML='<tr><td colspan="9"><div class="empty-state">Nenhuma run registrada.</div></td></tr>';return;}
   tbody.innerHTML=runs.map(r=>`<tr>
-    <td class="td-date">${r.date}</td><td class="td-boss">${r.boss}</td>
+    <td class="td-date">${r.date}</td>
+    <td class="td-boss">${r.boss}</td>
     <td class="td-bag">${r.bag||'<span style="color:var(--text-muted)">—</span>'}</td>
     <td class="td-scroll ${r.s3?'has-name':''}">${r.s3||''}</td>
     <td class="td-scroll ${r.s5?'has-name':''}">${r.s5||''}</td>
     <td class="td-scroll ${r.s9?'has-name':''}">${r.s9||''}</td>
     <td class="td-scroll ${r.s13?'has-name':''}">${r.s13||''}</td>
     <td class="td-scroll ${r.s20?'has-name':''}">${r.s20||''}</td>
-    <td><button class="btn-del" onclick="delRun(${r.id})">✕</button></td>
+    ${isAdmin?`<td><button class="btn-del" onclick="delRun(${r.id})">✕</button></td>`:''}
   </tr>`).join('');
 }
+
 function renderStacks(){
   const {stacks}=computeStats();
   const el=document.getElementById('tab-stacks');
   const sorted=Object.entries(stacks).sort((a,b)=>b[1]-a[1]);
-  el.innerHTML=sorted.length?sorted.map(([n,v],i)=>`<div class="stack-row"><div style="display:flex;align-items:center"><span class="stack-rank">${i+1}.</span><span>${n}</span></div><span class="stack-val ${v===0?'zero':''}">${v}</span></div>`).join(''):'<div class="empty-state">Sem dados.</div>';
+  el.innerHTML=sorted.length?sorted.map(([n,v],i)=>`<div class="stack-row">
+    <div style="display:flex;align-items:center"><span class="stack-rank">${i+1}.</span><span>${n}</span></div>
+    <span class="stack-val ${v===0?'zero':''}">${v}</span>
+  </div>`).join(''):'<div class="empty-state">Sem dados.</div>';
 }
 function renderLoot(){
   const {loot}=computeStats();
-  document.getElementById('tab-loot').innerHTML=Object.entries(loot).sort((a,b)=>b[1]-a[1]).map(([n,q])=>`<div class="loot-row"><span class="loot-name">${n}</span><span class="loot-qty ${q===0?'zero':''}">${q}</span></div>`).join('');
+  document.getElementById('tab-loot').innerHTML=Object.entries(loot).sort((a,b)=>b[1]-a[1])
+    .map(([n,q])=>`<div class="loot-row"><span class="loot-name">${n}</span><span class="loot-qty ${q===0?'zero':''}">${q}</span></div>`).join('');
 }
 function renderPlayers(){
   const {stacks,pdrops}=computeStats();
@@ -489,6 +536,7 @@ function openAddModal(){
 }
 function closeAddModal(){document.getElementById('add-modal').classList.remove('open');}
 function saveRun(){
+  if(!isAdmin)return;
   const raw=document.getElementById('f-date').value;if(!raw){alert('Informe a data.');return;}
   const d=new Date(raw+'T12:00:00');
   const date=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
@@ -499,23 +547,35 @@ function saveRun(){
     s20:document.getElementById('f-s20').value.trim()});
   saveData();renderBosses();closeAddModal();
 }
-function delRun(id){if(!confirm('Remover esta run?'))return;runs=runs.filter(r=>r.id!==id);saveData();renderBosses();}
+function delRun(id){
+  if(!isAdmin)return;
+  if(!confirm('Remover esta run?'))return;
+  runs=runs.filter(r=>r.id!==id);saveData();renderBosses();
+}
 function openPlayersModal(){renderPlayerTags();document.getElementById('players-modal').classList.add('open');}
 function closePlayersModal(){document.getElementById('players-modal').classList.remove('open');renderBosses();}
-function renderPlayerTags(){document.getElementById('player-tags').innerHTML=players.map((p,i)=>`<span class="player-tag">${p}<button onclick="removePlayer(${i})">✕</button></span>`).join('');}
+function renderPlayerTags(){
+  document.getElementById('player-tags').innerHTML=players.map((p,i)=>`<span class="player-tag">${p}<button onclick="removePlayer(${i})">✕</button></span>`).join('');
+}
 function addPlayer(){
+  if(!isAdmin)return;
   const input=document.getElementById('new-player-input');const name=input.value.trim();
   if(!name||players.includes(name)){input.focus();return;}
   players.push(name);saveData();input.value='';renderPlayerTags();renderPlayerDatalist();
 }
-function removePlayer(i){players.splice(i,1);saveData();renderPlayerTags();}
+function removePlayer(i){
+  if(!isAdmin)return;
+  players.splice(i,1);saveData();renderPlayerTags();
+}
+
 document.getElementById('add-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAddModal();});
 document.getElementById('players-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closePlayersModal();});
+document.getElementById('admin-login-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdminLogin();});
 
 // ════ HOT CUISINE ════
 function hcTarget(){return Math.max(1,parseInt(document.getElementById('hc-target')?.value)||900);}
 function hcFilter(f,el){hcFilterMode=f;document.querySelectorAll('.hc-fb').forEach(b=>b.classList.remove('active'));el.classList.add('active');hcRender();}
-function hcReset(){if(!confirm('Resetar todo o estoque?'))return;saveInv({});hcRender();}
+function hcReset(){if(!isAdmin||!confirm('Resetar todo o estoque?'))return;saveInv({});hcRender();}
 
 function hcRender(){
   const target=hcTarget();
@@ -524,16 +584,13 @@ function hcRender(){
   let nComplete=0,nPartial=0,nMissing=0;
 
   RECIPES.forEach(recipe=>{
-    const runs=rc[recipe.id]||target;
+    const runsN=rc[recipe.id]||target;
     let allOk=true,anyHave=false;
     recipe.ingredients.forEach(ing=>{
       const have=parseInt(inv[recipe.id+'_'+ing.name]||0);
-      if(have>=ing.perItem*runs)anyHave=true;
-      else allOk=false;
+      if(have>=ing.perItem*runsN)anyHave=true;else allOk=false;
     });
-    if(allOk)nComplete++;
-    else if(anyHave)nPartial++;
-    else nMissing++;
+    if(allOk)nComplete++;else if(anyHave)nPartial++;else nMissing++;
   });
 
   document.getElementById('hc-summary').innerHTML=`
@@ -543,25 +600,26 @@ function hcRender(){
     <div class="hc-stat"><div class="hc-stat-label">Parcial</div><div class="hc-stat-val" style="color:var(--orange)">${nPartial}</div></div>
     <div class="hc-stat"><div class="hc-stat-label">Faltando</div><div class="hc-stat-val" style="color:var(--red)">${nMissing}</div></div>`;
 
+  // Target input — somente admin edita
+  document.getElementById('hc-target').readOnly=!isAdmin;
+
   const container=document.getElementById('hc-recipes');
   container.innerHTML='';
 
   RECIPES.forEach((recipe,ri)=>{
-    const runs=rc[recipe.id]||target;
+    const runsN=rc[recipe.id]||target;
     let allOk=true,anyHave=false;
     const ings=recipe.ingredients.map(ing=>{
-      const need=ing.perItem*runs;
+      const need=ing.perItem*runsN;
       const have=parseInt(inv[recipe.id+'_'+ing.name]||0);
       const lack=need-have;
       if(lack>0)allOk=false;
       if(have>0)anyHave=true;
       return{...ing,need,have,lack};
     });
-
     const st=allOk?'complete':(anyHave?'partial':'missing');
     if(hcFilterMode==='complete'&&st!=='complete')return;
     if(hcFilterMode==='missing'&&st==='complete')return;
-
     const pillClass=allOk?'ok':(st==='partial'?'partial':'missing');
     const pillLabel=allOk?'Completo':(st==='partial'?'Parcial':'Faltando');
     const isOpen=hcOpen[recipe.id]!==false;
@@ -572,16 +630,23 @@ function hcRender(){
       const lackClass=ing.lack<=0?'ok':'bad';
       const lackLabel=ing.lack<=0?'✓':'-'+ing.lack.toLocaleString();
       const safeName=ing.name.replace(/'/g,"\\'");
+      const haveCell=isAdmin
+        ?`<input type="number" class="ing-have-input" value="${ing.have}" min="0" onchange="hcSetInv('${recipe.id}','${safeName}',this.value)">`
+        :`<span class="ing-have-static">${ing.have.toLocaleString()}</span>`;
       return`<tr>
         <td class="ing-name">${ing.name}</td>
-        <td class="ing-center" style="color:var(--text-dim)">${ing.perItem}</td>
+        <td class="ing-center">${ing.perItem}</td>
         <td class="ing-need">${ing.need.toLocaleString()}</td>
-        <td class="ing-center"><input type="number" class="ing-have-input" value="${ing.have}" min="0"
-          onchange="hcSetInv('${recipe.id}','${safeName}',this.value)" title="Minha quantidade"></td>
+        <td style="text-align:center">${haveCell}</td>
         <td class="ing-lack ${lackClass}">${lackLabel}</td>
         <td><div class="ing-bar-bg"><div class="ing-bar-fill" style="width:${pct}%;background:${barColor}"></div></div></td>
       </tr>`;
     }).join('');
+
+    // Runs input — somente admin edita
+    const runsCell=isAdmin
+      ?`<input type="number" class="recipe-runs-input" value="${runsN}" min="1" onchange="hcSetRuns('${recipe.id}',this.value)" onclick="event.stopPropagation()">`
+      :`<span style="color:var(--gold);font-family:'Cinzel',serif;font-size:13px">${runsN.toLocaleString()}</span>`;
 
     const card=document.createElement('div');
     card.className=`recipe-card st-${st}`;
@@ -593,9 +658,7 @@ function hcRender(){
         </div>
         <div class="recipe-meta">
           <div class="recipe-runs-wrap" onclick="event.stopPropagation()">
-            RUNS:
-            <input type="number" class="recipe-runs-input" value="${runs}" min="1"
-              onchange="hcSetRuns('${recipe.id}',this.value)" onclick="event.stopPropagation()" title="Quantidade de runs para esta receita">
+            RUNS: ${runsCell}
           </div>
           <span class="rpill ${pillClass}">${pillLabel}</span>
           <span class="rchevron" id="chv-${recipe.id}">${isOpen?'▲':'▼'}</span>
@@ -629,15 +692,22 @@ function hcToggle(id){
   hcOpen[id]=!open;
 }
 function hcSetInv(rid,ing,val){
+  if(!isAdmin)return;
   const inv=getInv();
   inv[rid+'_'+ing]=Math.max(0,parseInt(val)||0);
   saveInv(inv);hcRender();
 }
 function hcSetRuns(rid,val){
+  if(!isAdmin)return;
   const rc=getRunCounts();
   rc[rid]=Math.max(1,parseInt(val)||1);
   saveRunCounts(rc);hcRender();
 }
+
+// ════ INIT ════
+loadData();
+renderBosses();
+hcRender();
 </script>
 </body>
 </html>
