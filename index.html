@@ -193,6 +193,7 @@ body.readonly .admin-only{display:none!important}
     <!-- Visível apenas quando logado como admin -->
     <span class="admin-badge admin-only">Admin</span>
     <button class="btn-logout admin-only" onclick="openPlayersModal()">⚙ Jogadores</button>
+    <button class="btn-logout admin-only" style="border-color:var(--gold-dim);color:var(--gold)" onclick="exportHTML()" title="Gera um novo dreamteam.html com seus dados atuais embutidos. Substitua o arquivo antigo por este para que todos vejam seus dados.">↓ Salvar HTML</button>
     <button class="btn-logout admin-only" onclick="doAdminLogout()">Sair do admin</button>
   </div>
 </div>
@@ -386,6 +387,9 @@ const INITIAL_RUNS=[
   {id:11,date:"17/02/2026",boss:"4 Ess - Boss 11",bag:"",s3:"",s5:"",s9:"",s13:"Gall",s20:""},
 ];
 const INITIAL_PLAYERS=["Veyllor","Guto","Gall","Kevin","Baeck","Dracule"];
+const INITIAL_NEXTID=200;
+const INITIAL_HC_INV={};
+const INITIAL_HC_RC={};
 const SCROLL_PTS={s3:3,s5:5,s9:9,s13:13,s20:20};
 const LOOT_ITEMS=["Grand Sanguine Bow","Grand Sanguine Crossbow","Grand Sanguine Battleaxe","Grand Sanguine Claws","Grand Sanguine Hatchet","Grand Sanguine Razor","Grand Sanguine Blade","Grand Sanguine Coil","Grand Sanguine Rod","Grand Sanguine Bludgeon","Grand Sanguine Cudgel","Sanguine Rod","Sanguine Cudgel"];
 
@@ -395,22 +399,93 @@ let hcFilterMode='all';
 const hcOpen={};
 
 // ════ STORAGE ════
+// Dados vêm sempre dos INITIAL_ (embutidos no HTML).
+// Admin edita em memória + localStorage temporário.
+// "↓ Salvar HTML" gera novo arquivo com dados atualizados embutidos.
 function loadData(){
-  try{
-    runs=JSON.parse(localStorage.getItem('dt_runs')||'null')||JSON.parse(JSON.stringify(INITIAL_RUNS));
-    players=JSON.parse(localStorage.getItem('dt_players')||'null')||[...INITIAL_PLAYERS];
-    nextId=parseInt(localStorage.getItem('dt_nextid')||'200');
-  }catch(e){runs=JSON.parse(JSON.stringify(INITIAL_RUNS));players=[...INITIAL_PLAYERS];}
+  // Admin session: mantém edições locais entre reloads (apenas para o admin)
+  const adminSession = sessionStorage.getItem('dt_admin_session');
+  if(adminSession){
+    try{
+      const s=JSON.parse(adminSession);
+      runs=s.runs||JSON.parse(JSON.stringify(INITIAL_RUNS));
+      players=s.players||[...INITIAL_PLAYERS];
+      nextId=s.nextId||200;
+      return;
+    }catch(e){}
+  }
+  runs=JSON.parse(JSON.stringify(INITIAL_RUNS));
+  players=[...INITIAL_PLAYERS];
+  nextId=INITIAL_NEXTID||200;
 }
 function saveData(){
-  localStorage.setItem('dt_runs',JSON.stringify(runs));
-  localStorage.setItem('dt_players',JSON.stringify(players));
-  localStorage.setItem('dt_nextid',String(nextId));
+  // Salva só na session do admin (temporário, não compartilhado)
+  sessionStorage.setItem('dt_admin_session',JSON.stringify({runs,players,nextId}));
 }
-function getInv(){try{return JSON.parse(localStorage.getItem('hc_inv')||'{}')}catch(e){return{}}}
-function saveInv(v){localStorage.setItem('hc_inv',JSON.stringify(v))}
-function getRunCounts(){try{return JSON.parse(localStorage.getItem('hc_rc')||'{}')}catch(e){return{}}}
-function saveRunCounts(v){localStorage.setItem('hc_rc',JSON.stringify(v))}
+function getInv(){
+  // Base: dados embutidos no HTML (visíveis para todos)
+  const base=JSON.parse(JSON.stringify(INITIAL_HC_INV));
+  // Admin vê também edições da sessão atual ainda não exportadas
+  if(isAdmin){
+    try{const s=JSON.parse(sessionStorage.getItem('hc_inv_session')||'{}');return Object.assign(base,s);}catch(e){}
+  }
+  return base;
+}
+function saveInv(v){
+  // Merge com base e salva na session do admin
+  const base=JSON.parse(JSON.stringify(INITIAL_HC_INV));
+  sessionStorage.setItem('hc_inv_session',JSON.stringify(Object.assign(base,v)));
+}
+function getRunCounts(){
+  const base=JSON.parse(JSON.stringify(INITIAL_HC_RC));
+  if(isAdmin){
+    try{const s=JSON.parse(sessionStorage.getItem('hc_rc_session')||'{}');return Object.assign(base,s);}catch(e){}
+  }
+  return base;
+}
+function saveRunCounts(v){
+  const base=JSON.parse(JSON.stringify(INITIAL_HC_RC));
+  sessionStorage.setItem('hc_rc_session',JSON.stringify(Object.assign(base,v)));
+}
+
+// ════ EXPORT HTML ════
+// Gera novo dreamteam.html com os dados atuais embutidos como padrão.
+// Substitua o arquivo antigo por este — todos verão seus dados sem precisar de nada.
+function exportHTML(){
+  const inv=getInv();
+  const rc=getRunCounts();
+  // Pega o HTML atual da página
+  let html=document.documentElement.outerHTML;
+
+  // Substitui os blocos INITIAL_ pelos dados atuais
+  html=html.replace(
+    /const INITIAL_RUNS=\[[\s\S]*?\];/,
+    'const INITIAL_RUNS='+JSON.stringify(runs)+';'
+  );
+  html=html.replace(
+    /const INITIAL_PLAYERS=\[[\s\S]*?\];/,
+    'const INITIAL_PLAYERS='+JSON.stringify(players)+';'
+  );
+  html=html.replace(
+    /const INITIAL_NEXTID=[\s\S]*?;/,
+    'const INITIAL_NEXTID='+JSON.stringify(nextId)+';'
+  );
+  html=html.replace(
+    /const INITIAL_HC_INV=[\s\S]*?;/,
+    'const INITIAL_HC_INV='+JSON.stringify(inv)+';'
+  );
+  html=html.replace(
+    /const INITIAL_HC_RC=[\s\S]*?;/,
+    'const INITIAL_HC_RC='+JSON.stringify(rc)+';'
+  );
+
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='dreamteam.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 
 // ════ ADMIN AUTH ════
 function openAdminLogin(){
