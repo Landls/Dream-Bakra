@@ -3,761 +3,1225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dream Team — Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<title>Dream Team · Boss Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg-deep:#0e0c08;--bg-panel:#161310;--bg-card:#1c1814;--bg-hover:#211d17;--border:#2e2820;--border-light:#3a3228;--gold:#c8a84b;--gold-dim:#8a7030;--gold-bright:#e8c86a;--text-main:#d4c9b0;--text-dim:#7a7060;--text-muted:#4a4438;--green:#4a8a5a;--red:#9e4a4a;--orange:#b87030}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg-deep);color:var(--text-main);font-family:'Crimson Text',Georgia,serif;font-size:15px;min-height:100vh}
-.topbar{background:var(--bg-panel);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px;gap:16px}
-.topbar-title{font-family:'Cinzel',serif;color:var(--gold);font-size:18px;letter-spacing:3px;display:flex;align-items:center;gap:10px;white-space:nowrap}
-.topbar-title span{color:var(--text-dim);font-size:12px;letter-spacing:1px;font-family:'Crimson Text',serif}
-.topbar-right{display:flex;gap:8px;align-items:center}
-.admin-badge{background:#0a2a14;border:1px solid #1a4a2a;color:#5a9e6a;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:3px 10px;border-radius:20px}
-.btn-admin-login{background:transparent;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:3px;line-height:1;transition:all .2s;opacity:.35}
-.btn-admin-login:hover{color:var(--gold);opacity:1}
-.btn-logout{background:transparent;border:1px solid var(--border-light);color:var(--text-dim);font-size:12px;padding:5px 12px;border-radius:3px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px;transition:all .2s}
-.btn-logout:hover{border-color:var(--gold-dim);color:var(--gold)}
-.btn-export{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-size:11px;padding:5px 12px;border-radius:3px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px;transition:all .2s}
-.btn-export:hover{background:var(--gold-dim);color:#0e0c08}
-.page-tabs{display:flex;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 24px;gap:4px}
-.page-tab{font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;color:var(--text-dim);padding:13px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
-.page-tab:hover{color:var(--gold-dim)}
-.page-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.page{display:none;padding:20px 24px;max-width:1400px;margin:0 auto}
-.page.active{display:block}
-@media(max-width:700px){.page{padding:12px}}
-.panel{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;overflow:hidden}
-.panel-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.panel-header h2{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);letter-spacing:2px}
-.main-layout{display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start}
-@media(max-width:900px){.main-layout{grid-template-columns:1fr}}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-th{font-family:'Cinzel',serif;font-size:11px;font-weight:400;color:var(--gold);letter-spacing:1px;padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--bg-card)}
-td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-main);vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--bg-hover)}
-.td-date{color:var(--text-dim);font-size:13px;white-space:nowrap}
-.td-boss{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.5px}
-.td-bag{color:var(--gold);font-size:13px;white-space:pre-line;line-height:1.6}
-.td-scroll{color:var(--text-dim);font-size:13px;text-align:center}
-.td-scroll.has-name{color:var(--gold-bright);font-weight:600}
-.right-col{display:flex;flex-direction:column;gap:14px}
-.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg-card)}
-.tab{font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;color:var(--text-dim);padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;flex:1;text-align:center}
-.tab:hover{color:var(--gold-dim)}
-.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.stack-row{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid var(--border)}
-.stack-row:last-child{border-bottom:none}
-.stack-row:hover{background:var(--bg-hover)}
-.stack-rank{font-size:11px;color:var(--text-muted);margin-right:8px;font-family:'Cinzel',serif}
-.stack-val{font-family:'Cinzel',serif;font-size:16px;font-weight:600;color:var(--gold)}
-.stack-val.zero{color:var(--text-muted)}
-.loot-row{display:flex;align-items:center;justify-content:space-between;padding:7px 18px;border-bottom:1px solid var(--border);font-size:13px}
-.loot-row:last-child{border-bottom:none}
-.loot-name{color:var(--text-dim)}
-.loot-qty{font-weight:600;color:var(--gold);font-family:'Cinzel',serif;font-size:14px}
-.loot-qty.zero{color:var(--text-muted)}
-.pcard{border-bottom:1px solid var(--border);padding:12px 18px}
-.pcard:last-child{border-bottom:none}
-.pcard-name{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);letter-spacing:1px;margin-bottom:8px}
-.pcard-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 16px}
-.pstat{font-size:12px;color:var(--text-dim)}
-.pstat b{color:var(--text-main);font-weight:600}
-.btn-add{background:transparent;border:1px solid var(--gold-dim);color:var(--gold);font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;padding:6px 14px;border-radius:3px;cursor:pointer;transition:all .2s}
-.btn-add:hover{background:var(--gold-dim);color:#0e0c08}
-.btn-del{background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:3px;line-height:1;transition:color .2s}
-.btn-del:hover{color:#c06060}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
-.modal-overlay.open{display:flex}
-.modal{background:var(--bg-panel);border:1px solid var(--border-light);border-radius:6px;padding:28px 32px;width:100%;max-width:500px;margin:auto}
-.modal h3{font-family:'Cinzel',serif;font-size:15px;color:var(--gold);letter-spacing:2px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.form-row{margin-bottom:14px}
-.form-row label{display:block;font-size:11px;font-family:'Cinzel',serif;color:var(--text-dim);letter-spacing:1px;margin-bottom:5px}
-.form-row input,.form-row textarea{width:100%;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:3px;color:var(--text-main);font-family:'Crimson Text',serif;font-size:14px;padding:8px 12px;outline:none;transition:border-color .2s}
-.form-row input:focus,.form-row textarea:focus{border-color:var(--gold-dim)}
-.form-row textarea{resize:vertical;min-height:70px;line-height:1.6}
-.scrolls-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.modal-hint{font-size:12px;color:var(--text-muted);font-style:italic;margin-bottom:18px;line-height:1.5}
-.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
-.btn-cancel{background:transparent;border:1px solid var(--border-light);color:var(--text-dim);font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;padding:8px 18px;border-radius:3px;cursor:pointer;transition:all .2s}
-.btn-cancel:hover{border-color:var(--text-dim);color:var(--text-main)}
-.btn-save{background:var(--gold-dim);border:1px solid var(--gold-dim);color:#0e0c08;font-family:'Cinzel',serif;font-size:11px;font-weight:600;letter-spacing:1px;padding:8px 20px;border-radius:3px;cursor:pointer;transition:all .2s}
-.btn-save:hover{background:var(--gold);border-color:var(--gold)}
-.player-tag{display:inline-flex;align-items:center;gap:6px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:4px 12px 4px 14px;font-size:13px;color:var(--text-main);margin:4px}
-.player-tag button{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;line-height:1;padding:0}
-.player-tag button:hover{color:#c06060}
-.add-player-row{display:flex;gap:8px;margin-top:12px}
-.add-player-row input{flex:1}
-.btn-small{background:var(--gold-dim);border:none;color:#0e0c08;font-family:'Cinzel',serif;font-size:11px;font-weight:600;padding:8px 14px;border-radius:3px;cursor:pointer;white-space:nowrap}
-.btn-small:hover{background:var(--gold)}
-.empty-state{padding:32px;text-align:center;color:var(--text-muted);font-style:italic;font-size:14px}
-.admin-modal{background:var(--bg-panel);border:1px solid var(--border-light);border-radius:6px;padding:32px 36px;width:100%;max-width:320px;margin:auto;text-align:center}
-.admin-modal h3{font-family:'Cinzel',serif;font-size:16px;color:var(--gold);letter-spacing:2px;margin-bottom:6px}
-.admin-modal p{font-size:13px;color:var(--text-dim);margin-bottom:24px;font-style:italic}
-.admin-modal input[type=password]{width:100%;padding:10px 14px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:4px;color:var(--text-main);font-size:15px;font-family:'Crimson Text',serif;outline:none;margin-bottom:12px;text-align:center;letter-spacing:4px}
-.admin-modal input[type=password]:focus{border-color:var(--gold-dim)}
-.admin-modal-btns{display:flex;gap:8px}
-.admin-modal-btns .btn-save,.admin-modal-btns .btn-cancel{flex:1}
-.admin-err{color:#c06060;font-size:12px;margin-top:8px;min-height:18px;font-style:italic}
-/* Export tip banner */
-.export-tip{background:#0a1a08;border:1px solid #1a4a2a;border-radius:6px;padding:10px 16px;margin-bottom:16px;font-size:12px;color:#5a9e6a;display:flex;align-items:center;gap:10px}
-.export-tip b{color:#c8a84b}
-/* Hot Cuisine */
-.hc-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}
-.hc-header h2{font-family:'Cinzel',serif;font-size:16px;color:var(--gold);letter-spacing:2px}
-.hc-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
-.hc-stat{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;padding:12px 16px}
-.hc-stat-label{font-size:11px;font-family:'Cinzel',serif;color:var(--text-dim);letter-spacing:1px;margin-bottom:4px}
-.hc-stat-val{font-size:22px;font-weight:600;font-family:'Cinzel',serif}
-.hc-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
-.hc-qty-row{display:flex;align-items:center;gap:8px}
-.hc-qty-row label{font-size:12px;font-family:'Cinzel',serif;color:var(--text-dim);letter-spacing:1px;white-space:nowrap}
-.hc-qty-row input[type=number]{width:90px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:3px;color:var(--gold);font-family:'Cinzel',serif;font-size:15px;font-weight:600;padding:6px 10px;outline:none;text-align:center}
-.hc-qty-row input[type=number]:focus{border-color:var(--gold-dim)}
-.hc-filter-btns{display:flex;gap:6px;flex-wrap:wrap}
-.hc-fb{background:transparent;border:1px solid var(--border-light);color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:5px 12px;border-radius:3px;cursor:pointer;transition:all .2s}
-.hc-fb.active{background:var(--gold-dim);border-color:var(--gold-dim);color:#0e0c08}
-.hc-fb:hover:not(.active){border-color:var(--gold-dim);color:var(--gold)}
-.recipe-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;margin-bottom:12px;overflow:hidden}
-.recipe-card.st-complete{border-color:#1a4a2a}
-.recipe-card.st-partial{border-color:#6a4a10}
-.recipe-card.st-missing{border-color:#6a2020}
-.recipe-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;gap:12px}
-.recipe-head:hover{background:var(--bg-hover)}
-.recipe-title{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);letter-spacing:1px}
-.recipe-effect{font-size:11px;color:var(--text-dim);margin-top:2px;font-style:italic}
-.recipe-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.recipe-runs-wrap{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted);font-family:'Cinzel',serif;letter-spacing:1px}
-.recipe-runs-input{width:55px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:3px;color:var(--gold);font-family:'Cinzel',serif;font-size:13px;padding:3px 6px;outline:none;text-align:center}
-.recipe-runs-input:focus{border-color:var(--gold-dim)}
-.rpill{font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;padding:3px 10px;border-radius:20px;white-space:nowrap}
-.rpill.ok{background:#0a2a14;color:#5a9e6a;border:1px solid #1a4a2a}
-.rpill.partial{background:#2a1a00;color:#c8803a;border:1px solid #4a3010}
-.rpill.missing{background:#2a0a0a;color:#b05050;border:1px solid #6a2020}
-.rchevron{color:var(--text-dim);font-size:12px;min-width:12px;text-align:center}
-.recipe-body{display:none;padding:0 18px 14px}
-.recipe-body.open{display:block}
-.ing-table{width:100%;border-collapse:collapse;margin-top:10px}
-.ing-table th{font-family:'Cinzel',serif;font-size:10px;color:var(--text-muted);letter-spacing:1px;padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;background:var(--bg-card)}
-.ing-table td{padding:7px 8px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
-.ing-table tr:last-child td{border-bottom:none}
-.ing-name{color:var(--text-main)}
-.ing-center{text-align:center;color:var(--text-dim)}
-.ing-need{color:var(--gold);font-family:'Cinzel',serif;font-weight:600;text-align:center}
-.ing-have-input{width:72px;background:var(--bg-deep);border:1px solid var(--border-light);border-radius:3px;color:var(--text-main);font-family:'Crimson Text',serif;font-size:14px;padding:4px 6px;outline:none;text-align:center}
-.ing-have-input:focus{border-color:var(--gold-dim)}
-.ing-lack{font-family:'Cinzel',serif;font-weight:600;text-align:center}
-.ing-lack.ok{color:#5a9e6a}
-.ing-lack.bad{color:#b05050}
-.ing-bar-bg{width:80px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;display:inline-block}
-.ing-bar-fill{height:100%;border-radius:2px}
-body.readonly .admin-only{display:none!important}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg-deep)}
-::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+  :root {
+    --bg:        #0d0b08;
+    --bg2:       #13110d;
+    --bg3:       #1a1610;
+    --border:    #2e2618;
+    --gold:      #c9a84c;
+    --gold-dim:  #7a6228;
+    --gold-glow: #e8c96a;
+    --red:       #b84040;
+    --text:      #d4c9a8;
+    --text-dim:  #7a7260;
+    --white:     #f0e8d0;
+    --radius:    4px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 16px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(201,168,76,.04) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 80% 90%, rgba(184,64,64,.03) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px;
+    height: 64px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #18140d 0%, var(--bg) 100%);
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .logo h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .logo span {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-left: 2px;
+  }
+
+  /* admin trigger — invisible corner */
+  #admin-trigger {
+    position: absolute; top: 0; right: 0;
+    width: 40px; height: 40px;
+    cursor: pointer; opacity: 0;
+    z-index: 200;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex; align-items: center; gap: 0;
+    padding: 0 32px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    position: relative; z-index: 90;
+  }
+
+  nav button {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: none; border: none;
+    padding: 14px 20px;
+    cursor: pointer;
+    position: relative;
+    transition: color .2s;
+  }
+
+  nav button::after {
+    content: '';
+    position: absolute; bottom: 0; left: 16px; right: 16px;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform .2s;
+  }
+
+  nav button.active { color: var(--gold); }
+  nav button.active::after { transform: scaleX(1); }
+  nav button:hover { color: var(--text); }
+
+  /* ── LAYOUT ── */
+  .app {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 0;
+    min-height: calc(100vh - 105px);
+    position: relative; z-index: 1;
+  }
+
+  /* ── MAIN PANEL ── */
+  .main-panel {
+    padding: 32px;
+    border-right: 1px solid var(--border);
+  }
+
+  .panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .panel-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+
+  /* ── TABLE ── */
+  .boss-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .boss-table th {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .boss-table td {
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(46,38,24,.6);
+    vertical-align: middle;
+  }
+
+  .boss-table tr:hover td { background: rgba(201,168,76,.03); }
+
+  .boss-table td.date { font-size: 12px; white-space: nowrap; }
+  .boss-table td.boss-name { color: var(--text); font-weight: 400; }
+
+  .loot-tag {
+    display: inline-block;
+    color: var(--gold);
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.3;
+  }
+
+  .loot-line { display: block; }
+
+  .points-cell {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .pts-20 { color: var(--gold-glow); }
+  .pts-13 { color: var(--gold); }
+  .pts-9  { color: #b8a060; }
+  .pts-5  { color: #8a7840; }
+  .pts-3  { color: #6a5c30; }
+
+  .empty-cell { color: var(--border); font-size: 12px; text-align: center; }
+
+  /* ── SIDE PANEL ── */
+  .side-panel {
+    padding: 24px;
+    background: var(--bg2);
+  }
+
+  .side-tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .side-tab {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: none; border: none;
+    padding: 10px 14px;
+    cursor: pointer;
+    position: relative;
+    transition: color .2s;
+  }
+
+  .side-tab::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform .2s;
+  }
+
+  .side-tab.active { color: var(--gold); }
+  .side-tab.active::after { transform: scaleX(1); }
+
+  /* ── STACKS LIST ── */
+  .player-row {
+    display: flex; align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(46,38,24,.5);
+    gap: 10px;
+  }
+
+  .player-rank {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    color: var(--gold-dim);
+    width: 16px;
+    text-align: center;
+  }
+
+  .player-name { flex: 1; font-size: 15px; color: var(--text); }
+
+  .player-pts {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  /* ── LOOT LIST ── */
+  .loot-item {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(46,38,24,.5);
+  }
+
+  .loot-item-name {
+    font-size: 14px;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .loot-item-meta {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* ── PLAYERS LIST ── */
+  .player-badge {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(46,38,24,.5);
+  }
+
+  .player-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold-dim);
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid var(--gold-dim);
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all .2s;
+    border-radius: var(--radius);
+  }
+
+  .btn:hover {
+    background: rgba(201,168,76,.1);
+    border-color: var(--gold);
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--bg);
+    border-color: var(--gold);
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-glow);
+    border-color: var(--gold-glow);
+  }
+
+  .btn-danger { border-color: var(--red); color: var(--red); }
+  .btn-danger:hover { background: rgba(184,64,64,.1); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.75);
+    z-index: 1000;
+    align-items: center; justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold-dim);
+    width: 520px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 32px;
+    border-radius: var(--radius);
+    position: relative;
+    animation: slideUp .25s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);   opacity: 1; }
+  }
+
+  .modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; color: var(--text-dim);
+    font-size: 20px; cursor: pointer;
+    line-height: 1; padding: 4px;
+  }
+
+  .modal-close:hover { color: var(--text); }
+
+  /* ── FORM ── */
+  .field { margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 6px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color .2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold-dim);
+  }
+
+  select option { background: var(--bg3); }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .field-row { display: flex; gap: 12px; }
+  .field-row .field { flex: 1; }
+
+  /* loot entries */
+  .loot-entries { margin-bottom: 12px; }
+
+  .loot-entry {
+    display: flex; gap: 8px; align-items: center;
+    margin-bottom: 8px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+  }
+
+  .loot-entry input { background: transparent; border: none; padding: 4px 0; flex: 1; }
+  .loot-entry select { background: transparent; border: none; padding: 4px; width: auto; }
+  .loot-entry input:focus, .loot-entry select:focus { border: none; box-shadow: none; }
+
+  .remove-loot {
+    background: none; border: none; color: var(--text-dim);
+    cursor: pointer; font-size: 16px; line-height: 1;
+    padding: 2px 4px;
+  }
+
+  .remove-loot:hover { color: var(--red); }
+
+  .add-loot-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    background: none; border: 1px dashed var(--border);
+    width: 100%; padding: 8px;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all .2s;
+  }
+
+  .add-loot-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+  /* player checkboxes */
+  .player-checks {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+
+  .check-label {
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Crimson Pro', serif;
+    font-style: normal;
+    color: var(--text);
+    letter-spacing: 0;
+    text-transform: none;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all .2s;
+  }
+
+  .check-label:has(input:checked) {
+    border-color: var(--gold-dim);
+    background: rgba(201,168,76,.08);
+    color: var(--gold);
+  }
+
+  .check-label input { display: none; }
+
+  /* modal actions */
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+  /* ── ADMIN PANEL ── */
+  #admin-panel {
+    display: none;
+    position: fixed; top: 64px; right: 0;
+    width: 280px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold-dim);
+    padding: 20px;
+    z-index: 500;
+    box-shadow: -8px 8px 32px rgba(0,0,0,.5);
+  }
+
+  #admin-panel.open { display: block; }
+
+  .admin-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .admin-section { margin-bottom: 16px; }
+
+  .admin-section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .admin-players-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .admin-player-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 8px;
+    background: var(--bg3);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .admin-player-name { font-size: 13px; color: var(--text); }
+
+  /* ── AUTH MODAL ── */
+  #auth-modal .modal { max-width: 340px; }
+
+  .auth-error {
+    color: var(--red); font-size: 13px; margin-top: 8px; display: none;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    padding: 48px 0;
+    text-align: center;
+    color: var(--text-dim);
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  /* ── DIVIDER ── */
+  .ornament {
+    text-align: center;
+    color: var(--gold-dim);
+    font-size: 18px;
+    letter-spacing: 8px;
+    margin: 4px 0;
+  }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--bg3);
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    border-radius: var(--radius);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s;
+    z-index: 9999;
+  }
+
+  #toast.show { opacity: 1; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .side-panel { border-top: 1px solid var(--border); }
+  }
 </style>
 </head>
-<body class="readonly">
+<body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="topbar-title">☽ DREAM TEAM <span>TRACKER</span></div>
-  <div class="topbar-right">
-    <button class="btn-admin-login" id="btn-admin-toggle" onclick="openAdminLogin()" title="Admin">☽</button>
-    <span class="admin-badge admin-only">Admin</span>
-    <button class="btn-export admin-only" onclick="exportHTML()" title="Baixa o arquivo HTML com todos os dados atuais embutidos. Substitua o arquivo antigo por este para compartilhar com todos.">↓ Exportar HTML</button>
-    <button class="btn-logout admin-only" onclick="openPlayersModal()">⚙ Jogadores</button>
-    <button class="btn-logout admin-only" onclick="doAdminLogout()">Sair do admin</button>
-  </div>
-</div>
-
-<!-- PAGE TABS -->
-<div class="page-tabs">
-  <div class="page-tab active" onclick="showPage('bosses',this)">☩ Boss Tracker</div>
-  <div class="page-tab" onclick="showPage('cuisine',this)">✦ Hot Cuisine Quest</div>
-</div>
-
-<!-- BOSS TRACKER -->
-<div class="page active" id="page-bosses">
-  <div id="export-tip" class="export-tip admin-only" style="display:none">
-    ✦ Você fez alterações. Clique em <b>↓ Exportar HTML</b> no topo para gerar o arquivo atualizado e substituir o antigo.
-  </div>
-  <div class="main-layout">
+<!-- ── HEADER ── -->
+<header>
+  <div class="logo">
+    <div class="logo-icon"></div>
     <div>
-      <div class="panel">
-        <div class="panel-header">
-          <h2>Bosses</h2>
-          <button class="btn-add admin-only" onclick="openAddModal()">+ Adicionar Run</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th style="width:95px">Data</th><th style="width:130px">Boss</th><th>Bag You Covet</th>
-              <th style="width:75px;text-align:center">3pts</th><th style="width:75px;text-align:center">5pts</th>
-              <th style="width:75px;text-align:center">9pts</th><th style="width:80px;text-align:center">13pts</th>
-              <th style="width:80px;text-align:center">20pts</th>
-              <th class="admin-only" style="width:36px"></th>
-            </tr></thead>
-            <tbody id="boss-tbody"></tbody>
-          </table>
-        </div>
-      </div>
+      <h1>Dream Team</h1>
+      <span>Tracker</span>
     </div>
-    <div class="right-col">
-      <div class="panel">
-        <div class="tabs">
-          <div class="tab active" onclick="showSideTab('stacks',this)">Stacks</div>
-          <div class="tab" onclick="showSideTab('loot',this)">Loot</div>
-          <div class="tab" onclick="showSideTab('players',this)">Players</div>
-        </div>
-        <div id="tab-stacks"></div>
-        <div id="tab-loot" style="display:none"></div>
-        <div id="tab-players" style="display:none"></div>
+  </div>
+  <div id="admin-trigger" title="Admin" onclick="openAuth()"></div>
+</header>
+
+<!-- ── NAV ── -->
+<nav>
+  <button class="active" onclick="setView('tracker',this)">⚔ Boss Tracker</button>
+</nav>
+
+<!-- ── ADMIN PANEL ── -->
+<div id="admin-panel">
+  <div class="admin-title">⚙ Painel Admin</div>
+
+  <div class="admin-section">
+    <div class="admin-section-title">Jogadores</div>
+    <div class="admin-players-list" id="admin-players-list"></div>
+    <div style="margin-top:8px">
+      <div class="field-row" style="margin-bottom:0">
+        <input id="new-player-input" placeholder="Nome do jogador…" style="flex:1">
+        <button class="btn btn-primary" onclick="addPlayer()" style="white-space:nowrap">+</button>
       </div>
     </div>
   </div>
-</div>
 
-<!-- HOT CUISINE -->
-<div class="page" id="page-cuisine">
-  <div class="hc-header"><h2>✦ Hot Cuisine Quest — Supply Checker</h2></div>
-  <div class="hc-controls">
-    <div class="hc-qty-row">
-      <label>Bonecos alvo:</label>
-      <input type="number" id="hc-target" value="900" min="1" oninput="hcRender()">
+  <div class="admin-section">
+    <div class="admin-section-title">Ações</div>
+    <div style="display:flex; gap:8px; flex-direction:column">
+      <button class="btn btn-danger" onclick="clearAllData()" style="width:100%;font-size:9px">Limpar todos os dados</button>
+      <button class="btn" onclick="closeAdmin()" style="width:100%;font-size:9px">Fechar painel</button>
     </div>
-    <div class="hc-filter-btns">
-      <button class="hc-fb active" onclick="hcFilter('all',this)">Todos</button>
-      <button class="hc-fb" onclick="hcFilter('missing',this)">Faltando</button>
-      <button class="hc-fb" onclick="hcFilter('complete',this)">Completo</button>
-    </div>
-    <button class="btn-add admin-only" style="font-size:10px;padding:5px 12px" onclick="hcReset()">↺ Resetar estoque</button>
-  </div>
-  <div class="hc-summary" id="hc-summary"></div>
-  <div id="hc-recipes"></div>
-</div>
-
-<!-- ADMIN LOGIN MODAL -->
-<div class="modal-overlay" id="admin-login-modal">
-  <div class="admin-modal">
-    <h3>ADMIN</h3>
-    <p>Digite a senha para editar</p>
-    <input type="password" id="admin-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()">
-    <div class="admin-modal-btns">
-      <button class="btn-cancel" onclick="closeAdminLogin()">Cancelar</button>
-      <button class="btn-save" onclick="doAdminLogin()">Entrar</button>
-    </div>
-    <div class="admin-err" id="admin-err"></div>
   </div>
 </div>
 
-<!-- ADD RUN MODAL -->
-<div class="modal-overlay" id="add-modal">
+<!-- ── MAIN APP ── -->
+<div class="app">
+
+  <!-- Left: Boss Table -->
+  <div class="main-panel">
+    <div class="panel-header">
+      <div class="panel-title">⚔ Bosses</div>
+      <button class="btn btn-primary" id="add-boss-btn" onclick="openBossModal()" style="display:none">+ Registrar Boss</button>
+    </div>
+
+    <table class="boss-table" id="boss-table">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Boss</th>
+          <th>Loot Obtido</th>
+          <th style="text-align:center">3pts</th>
+          <th style="text-align:center">5pts</th>
+          <th style="text-align:center">9pts</th>
+          <th style="text-align:center">13pts</th>
+          <th style="text-align:center">20pts</th>
+          <th id="actions-col" style="display:none">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="boss-tbody"></tbody>
+    </table>
+
+    <div id="boss-empty" class="empty-state" style="display:none">
+      Nenhum boss registrado ainda.<br>
+      <span style="font-size:12px; color: var(--border)">Entre como admin para adicionar.</span>
+    </div>
+  </div>
+
+  <!-- Right: Side Panel -->
+  <div class="side-panel">
+    <div class="side-tabs">
+      <button class="side-tab active" onclick="setSideTab('stacks',this)">Stacks</button>
+      <button class="side-tab" onclick="setSideTab('loot',this)">Loot</button>
+      <button class="side-tab" onclick="setSideTab('players',this)">Players</button>
+    </div>
+
+    <div id="tab-stacks">
+      <div id="stacks-list"></div>
+    </div>
+
+    <div id="tab-loot" style="display:none">
+      <div id="loot-list"></div>
+    </div>
+
+    <div id="tab-players" style="display:none">
+      <div id="players-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── AUTH MODAL ── -->
+<div class="modal-overlay" id="auth-modal">
   <div class="modal">
-    <h3>✦ Adicionar Run de Boss</h3>
-    <div class="form-row"><label>Data</label><input type="date" id="f-date"></div>
-    <div class="form-row"><label>Boss</label><input type="text" id="f-boss" placeholder="ex: 4 Ess - Boss 22"></div>
-    <div class="form-row">
-      <label>Bag You Covet (loot especial)</label>
-      <div class="modal-hint">Uma linha por drop. Formato: <em>NomeJogador - Nome do Item</em></div>
-      <textarea id="f-bag" rows="3" placeholder="Guto - Grand Sanguine Bow&#10;Kevin - Grand Sanguine Claws"></textarea>
+    <button class="modal-close" onclick="closeModal('auth-modal')">×</button>
+    <div class="modal-title">🔐 Acesso Admin</div>
+    <div class="field">
+      <label>Senha</label>
+      <input type="password" id="auth-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAuth()">
+      <div class="auth-error" id="auth-error">Senha incorreta.</div>
     </div>
-    <div class="scrolls-grid">
-      <div class="form-row"><label>Scroll 3pts</label><input type="text" id="f-s3" list="player-list"></div>
-      <div class="form-row"><label>Scroll 5pts</label><input type="text" id="f-s5" list="player-list"></div>
-      <div class="form-row"><label>Scroll 9pts</label><input type="text" id="f-s9" list="player-list"></div>
-      <div class="form-row"><label>Scroll 13pts</label><input type="text" id="f-s13" list="player-list"></div>
-      <div class="form-row"><label>Scroll 20pts</label><input type="text" id="f-s20" list="player-list"></div>
-    </div>
-    <datalist id="player-list"></datalist>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeAddModal()">Cancelar</button>
-      <button class="btn-save" onclick="saveRun()">Salvar Run</button>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('auth-modal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="checkAuth()">Entrar</button>
     </div>
   </div>
 </div>
 
-<!-- PLAYERS MODAL -->
-<div class="modal-overlay" id="players-modal">
-  <div class="modal" style="max-width:400px">
-    <h3>⚙ Gerenciar Jogadores</h3>
-    <div style="font-size:12px;color:var(--text-dim);margin-bottom:14px;font-style:italic">Jogadores cadastrados aparecem como sugestão ao adicionar runs.</div>
-    <div id="player-tags"></div>
-    <div class="add-player-row">
-      <input type="text" id="new-player-input" placeholder="Nome do jogador" onkeydown="if(event.key==='Enter')addPlayer()">
-      <button class="btn-small" onclick="addPlayer()">Adicionar</button>
+<!-- ── BOSS MODAL ── -->
+<div class="modal-overlay" id="boss-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('boss-modal')">×</button>
+    <div class="modal-title" id="boss-modal-title">⚔ Registrar Boss</div>
+
+    <input type="hidden" id="edit-boss-id">
+
+    <div class="field-row">
+      <div class="field">
+        <label>Data</label>
+        <input type="date" id="boss-date">
+      </div>
+      <div class="field" style="flex:2">
+        <label>Nome do Boss</label>
+        <input type="text" id="boss-name" placeholder="ex: 4 Ess – Boss 22">
+      </div>
     </div>
-    <div class="modal-btns"><button class="btn-save" onclick="closePlayersModal()">Fechar</button></div>
+
+    <div class="field">
+      <label>Jogadores presentes</label>
+      <div class="player-checks" id="player-checks"></div>
+    </div>
+
+    <div class="field">
+      <label>Loot obtido <span style="font-weight:300;text-transform:none;letter-spacing:0;color:var(--text-dim)">(adicione quantos quiser)</span></label>
+      <div class="loot-entries" id="loot-entries"></div>
+      <button class="add-loot-btn" onclick="addLootEntry()">+ Adicionar item</button>
+    </div>
+
+    <div class="field">
+      <label>Pontuação especial (opcional)</label>
+      <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px;font-family:'Crimson Pro';font-style:italic">
+        Atribua pontos especiais a jogadores além do loot normal.
+      </div>
+      <div id="special-pts-area"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('boss-modal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveBoss()">Salvar</button>
+    </div>
   </div>
 </div>
+
+<!-- ── TOAST ── -->
+<div id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════
-//  ⚠️  SENHA ADMIN — altere aqui
-// ══════════════════════════════════════════════
-const ADMIN_SENHA = "dreamteam2026";
+// ────────────────────────────────────────────
+// STATE
+// ────────────────────────────────────────────
+const ADMIN_PASS = 'dreamteam';
+const LS_KEY = 'dreamteam_v2';
 
-// ══════════════════════════════════════════════
-//  DADOS EMBUTIDOS — atualizados pelo Exportar HTML
-//  NÃO edite manualmente estas variáveis
-// ══════════════════════════════════════════════
-const DATA_RUNS = [{"id":1,"date":"08/04/2026","boss":"4 Ess - Boss 21","bag":"Baeck - Sanguine Rod\nKevin - Sanguine Cudgel","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":2,"date":"04/04/2026","boss":"4 Ess - Boss 20","bag":"","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":3,"date":"01/04/2026","boss":"4 Ess - Boss 19","bag":"","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":4,"date":"29/03/2026","boss":"4 Ess - Boss 18","bag":"","s3":"","s5":"","s9":"","s13":"Kevin","s20":""},{"id":5,"date":"26/03/2026","boss":"4 Ess - Boss 17","bag":"Gall - Grand Sanguine Coil","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":6,"date":"04/03/2026","boss":"4 Ess - Boss 16","bag":"","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":7,"date":"01/03/2026","boss":"4 Ess - Boss 15","bag":"","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":8,"date":"26/02/2026","boss":"4 Ess - Boss 14","bag":"","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":9,"date":"23/02/2026","boss":"4 Ess - Boss 13","bag":"","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":10,"date":"20/02/2026","boss":"4 Ess - Boss 12","bag":"","s3":"","s5":"","s9":"","s13":"","s20":""},{"id":11,"date":"17/02/2026","boss":"4 Ess - Boss 11","bag":"","s3":"","s5":"","s9":"","s13":"Gall","s20":""}];
-const DATA_PLAYERS = ["Veyllor","Guto","Gall","Kevin","Baeck","Dracule"];
-const DATA_NEXTID = 200;
-const DATA_HC_INV = {};
-const DATA_HC_RC = {};
+let state = {
+  bosses:  [],   // { id, date, name, loot:[{item,player}], players:[], specialPts:{playerName:pts} }
+  players: [],   // [{id, name}]
+};
 
-// ══════════════════════════════════════════════
-//  HOT CUISINE — 14 receitas (perItem = por run)
-// ══════════════════════════════════════════════
-const RECIPES = [
-  {id:'r1',name:'Rotworm Stew',effect:'Restaura HP completamente',ingredients:[
-    {name:'Piece of Meat',perItem:2},{name:'Vial of Beer',perItem:2},{name:'Potato',perItem:20},
-    {name:'Onion',perItem:1},{name:'Garlic',perItem:1},{name:'Flour',perItem:5}]},
-  {id:'r2',name:'Hydra Tongue Salad',effect:'Cura todas as condições negativas',ingredients:[
-    {name:'Hydra Tongue',perItem:2},{name:'Tomato',perItem:2},{name:'Cucumber',perItem:1},
-    {name:'Egg',perItem:2},{name:'Troll Green',perItem:1},{name:'Vial of Wine',perItem:1}]},
-  {id:'r3',name:'Roasted Dragon Wings',effect:'+10 Shielding por 1h',ingredients:[
-    {name:'Fresh Dead Bat',perItem:1},{name:'Jalapeño Pepper',perItem:3},{name:'Brown Bread',perItem:5},
-    {name:'Egg',perItem:2},{name:'Powder Herb',perItem:1},{name:'Red Mushroom',perItem:5}]},
-  {id:'r4',name:'Tropical Fried Terrorbird',effect:'+5 Magic Level por 1h',ingredients:[
-    {name:'Fresh Dead Chicken',perItem:1},{name:'Lemon',perItem:2},{name:'Orange',perItem:2},
-    {name:'Mango',perItem:2},{name:'Vial of Coconut Milk',perItem:2},{name:'Stone Herb',perItem:1}]},
-  {id:'r5',name:'Banana Chocolate Shake',effect:'Felicidade',ingredients:[
-    {name:'Bar of Chocolate',perItem:1},{name:'Cream Cake',perItem:1},{name:'Banana',perItem:2},
-    {name:'Vial of Milk',perItem:2},{name:'Sling Herb',perItem:1},{name:'Star Herb',perItem:1}]},
-  {id:'r6',name:'Veggie Casserole',effect:'+10 Melee Skills por 1h',ingredients:[
-    {name:'Carrot',perItem:2},{name:'Tomato',perItem:2},{name:'Corncob',perItem:2},
-    {name:'Cucumber',perItem:2},{name:'Onion',perItem:1},{name:'Garlic',perItem:1},
-    {name:'Cheese',perItem:1},{name:'White Mushroom',perItem:20},{name:'Brown Mushroom',perItem:5}]},
-  {id:'r7',name:'Filled Jalapeño Peppers',effect:'+100 Speed por 1h',ingredients:[
-    {name:'Jalapeño Pepper',perItem:10},{name:'Cheese',perItem:2},{name:'Troll Green',perItem:1},
-    {name:'Shadow Herb',perItem:1},{name:'Vial of Mead',perItem:1},{name:'Egg',perItem:2}]},
-  {id:'r8',name:'Blessed Steak',effect:'Restaura Mana completamente',ingredients:[
-    {name:'Piece of Ham',perItem:1},{name:'Plum',perItem:5},{name:'Onion',perItem:1},
-    {name:'Beetroot',perItem:2},{name:'Pumpkin',perItem:1},{name:'Jalapeño Pepper',perItem:2}]},
-  {id:'r9',name:'Northern Fishburger',effect:'+50 Fishing por 1h',ingredients:[
-    {name:'Northern Pike',perItem:1},{name:'Rainbow Trout',perItem:1},{name:'Green Perch',perItem:1},
-    {name:'Shrimp',perItem:5},{name:'Roll',perItem:2},{name:'Fern',perItem:1}]},
-  {id:'r10',name:'Carrot Cake',effect:'+10 Distance Fighting por 1h',ingredients:[
-    {name:'Carrot',perItem:7},{name:'Flour',perItem:3},{name:'Egg',perItem:3},
-    {name:'Butter',perItem:2},{name:'Walnut',perItem:5},{name:'Vial of Milk',perItem:1},{name:'Cream Cake',perItem:1}]},
-  {id:'r11',name:'Coconut Shrimp Bake',effect:'+Velocidade subaquática 24h',ingredients:[
-    {name:'Shrimp',perItem:10},{name:'Rice Ball',perItem:10},{name:'Vial of Coconut Milk',perItem:5},
-    {name:'White Mushroom',perItem:3},{name:'Brown Mushroom',perItem:3}]},
-  {id:'r12',name:'Blackjack',effect:'Restaura HP completamente (4x)',ingredients:[
-    {name:'Sandcrawler Shell',perItem:5},{name:'Vial of Water',perItem:2},{name:'Carrot',perItem:20},
-    {name:'Potato',perItem:10},{name:'Jalapeño Pepper',perItem:3}]},
-  {id:'r13',name:'Demonic Candy Balls',effect:'Efeito aleatório',ingredients:[
-    {name:'Candy',perItem:3},{name:'Candy Cane',perItem:3},{name:'Bar of Chocolate',perItem:2},
-    {name:'Gingerbreadman',perItem:15},{name:'Flask of Demonic Blood',perItem:1}]},
-  {id:'r14',name:'Sweet Mangonaise Elixir',effect:'Copia 10x o anel equipado',ingredients:[
-    {name:'Egg',perItem:40},{name:'Mango',perItem:20},{name:'Honeycomb',perItem:10},
-    {name:'Bottle of Bug Milk',perItem:1},{name:'Blessed Wooden Stake',perItem:1}]},
-];
-
-const SCROLL_PTS={s3:3,s5:5,s9:9,s13:13,s20:20};
-const LOOT_ITEMS=["Grand Sanguine Bow","Grand Sanguine Crossbow","Grand Sanguine Battleaxe","Grand Sanguine Claws","Grand Sanguine Hatchet","Grand Sanguine Razor","Grand Sanguine Blade","Grand Sanguine Coil","Grand Sanguine Rod","Grand Sanguine Bludgeon","Grand Sanguine Cudgel","Sanguine Rod","Sanguine Cudgel"];
-
-// ══════════════════════════════════════════════
-//  ESTADO
-// ══════════════════════════════════════════════
-let runs, players, nextId, hcInv, hcRc;
 let isAdmin = false;
-let hcFilterMode = 'all';
-let dirty = false;
-const hcOpen = {};
+let currentSideTab = 'stacks';
+let editingBossId = null;
 
-// ══════════════════════════════════════════════
-//  STORAGE — localStorage para o admin,
-//  visitantes sempre leem os DATA_ embutidos no HTML
-// ══════════════════════════════════════════════
-function loadData() {
-  // Admin: tenta carregar do localStorage (edições não exportadas ainda)
-  if (isAdmin) {
-    try {
-      const s = localStorage.getItem('dt_state');
-      if (s) {
-        const p = JSON.parse(s);
-        runs    = p.runs    || JSON.parse(JSON.stringify(DATA_RUNS));
-        players = p.players || [...DATA_PLAYERS];
-        nextId  = p.nextId  || DATA_NEXTID;
-        hcInv   = p.hcInv   || JSON.parse(JSON.stringify(DATA_HC_INV));
-        hcRc    = p.hcRc    || JSON.parse(JSON.stringify(DATA_HC_RC));
-        return;
-      }
-    } catch(e) {}
-  }
-  // Visitantes (e admin sem localStorage): usa os dados embutidos no HTML
-  runs    = JSON.parse(JSON.stringify(DATA_RUNS));
-  players = [...DATA_PLAYERS];
-  nextId  = DATA_NEXTID;
-  hcInv   = JSON.parse(JSON.stringify(DATA_HC_INV));
-  hcRc    = JSON.parse(JSON.stringify(DATA_HC_RC));
+// ────────────────────────────────────────────
+// PERSISTENCE
+// ────────────────────────────────────────────
+function save() {
+  localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 
-function saveLocal() {
-  // Salva no localStorage do admin imediatamente após cada edição
-  if (!isAdmin) return;
-  localStorage.setItem('dt_state', JSON.stringify({runs, players, nextId, hcInv, hcRc}));
-  dirty = true;
-  const tip = document.getElementById('export-tip');
-  if (tip) tip.style.display = 'flex';
+function load() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) state = JSON.parse(raw);
+  } catch(e) { state = { bosses:[], players:[] }; }
 }
 
-// ══════════════════════════════════════════════
-//  EXPORTAR HTML — gera novo arquivo com dados atuais
-//  embutidos nas variáveis DATA_. Substitua o arquivo
-//  antigo por este e todos verão os dados atualizados.
-// ══════════════════════════════════════════════
-function exportHTML() {
-  let html = document.documentElement.outerHTML;
-  const esc = s => s.replace(/\\/g,'\\\\').replace(/`/g,'\\`');
-
-  html = html.replace(
-    /const DATA_RUNS = [\s\S]*?;(?=\n)/,
-    'const DATA_RUNS = ' + JSON.stringify(runs) + ';'
-  );
-  html = html.replace(
-    /const DATA_PLAYERS = [\s\S]*?;(?=\n)/,
-    'const DATA_PLAYERS = ' + JSON.stringify(players) + ';'
-  );
-  html = html.replace(
-    /const DATA_NEXTID = [\s\S]*?;(?=\n)/,
-    'const DATA_NEXTID = ' + JSON.stringify(nextId) + ';'
-  );
-  html = html.replace(
-    /const DATA_HC_INV = [\s\S]*?;(?=\n)/,
-    'const DATA_HC_INV = ' + JSON.stringify(hcInv) + ';'
-  );
-  html = html.replace(
-    /const DATA_HC_RC = [\s\S]*?;(?=\n)/,
-    'const DATA_HC_RC = ' + JSON.stringify(hcRc) + ';'
-  );
-
-  const blob = new Blob([html], {type:'text/html'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'dreamteam.html';
-  a.click();
-  URL.revokeObjectURL(a.href);
-
-  dirty = false;
-  const tip = document.getElementById('export-tip');
-  if (tip) tip.style.display = 'none';
+// ────────────────────────────────────────────
+// AUTH
+// ────────────────────────────────────────────
+function openAuth() {
+  if (isAdmin) { toggleAdmin(); return; }
+  document.getElementById('auth-password').value = '';
+  document.getElementById('auth-error').style.display = 'none';
+  openModal('auth-modal');
+  setTimeout(() => document.getElementById('auth-password').focus(), 100);
 }
 
-// ══════════════════════════════════════════════
-//  ADMIN AUTH
-// ══════════════════════════════════════════════
-function openAdminLogin() {
-  document.getElementById('admin-pwd').value = '';
-  document.getElementById('admin-err').textContent = '';
-  document.getElementById('admin-login-modal').classList.add('open');
-  setTimeout(() => document.getElementById('admin-pwd').focus(), 100);
-}
-function closeAdminLogin() { document.getElementById('admin-login-modal').classList.remove('open'); }
-
-function doAdminLogin() {
-  if (document.getElementById('admin-pwd').value === ADMIN_SENHA) {
+function checkAuth() {
+  const pw = document.getElementById('auth-password').value;
+  if (pw === ADMIN_PASS) {
     isAdmin = true;
-    document.body.classList.remove('readonly');
-    document.getElementById('btn-admin-toggle').style.display = 'none';
-    closeAdminLogin();
-    loadData(); // recarrega com dados do localStorage do admin
-    renderAll();
+    closeModal('auth-modal');
+    showAdminUI();
+    toast('Bem-vindo, Admin');
   } else {
-    document.getElementById('admin-err').textContent = 'Senha incorreta.';
-    document.getElementById('admin-pwd').value = '';
-    document.getElementById('admin-pwd').focus();
+    document.getElementById('auth-error').style.display = 'block';
   }
 }
 
-function doAdminLogout() {
-  if (dirty && !confirm('Você tem alterações não exportadas. Sair mesmo assim?')) return;
-  isAdmin = false;
-  document.body.classList.add('readonly');
-  document.getElementById('btn-admin-toggle').style.display = '';
-  loadData(); // volta para os dados embutidos (como visitante vê)
+function showAdminUI() {
+  document.getElementById('add-boss-btn').style.display = '';
+  document.getElementById('actions-col').style.display = '';
+  document.querySelectorAll('.action-cell').forEach(c => c.style.display = '');
+  renderAdmin();
+  toggleAdmin();
+}
+
+function toggleAdmin() {
+  document.getElementById('admin-panel').classList.toggle('open');
+}
+
+function closeAdmin() {
+  document.getElementById('admin-panel').classList.remove('open');
+}
+
+// ────────────────────────────────────────────
+// PLAYERS (ADMIN)
+// ────────────────────────────────────────────
+function addPlayer() {
+  const input = document.getElementById('new-player-input');
+  const name = input.value.trim();
+  if (!name) return;
+  state.players.push({ id: uid(), name });
+  input.value = '';
+  save();
   renderAll();
 }
 
-// ══════════════════════════════════════════════
-//  NAVIGATION
-// ══════════════════════════════════════════════
-function showPage(name, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  el.classList.add('active');
+function removePlayer(id) {
+  if (!confirm('Remover este jogador?')) return;
+  state.players = state.players.filter(p => p.id !== id);
+  save();
+  renderAll();
 }
 
-// ══════════════════════════════════════════════
-//  BOSS TRACKER
-// ══════════════════════════════════════════════
-function computeStats() {
-  const stacks={}, loot={}, pdrops={};
-  LOOT_ITEMS.forEach(i => loot[i] = 0);
-  players.forEach(p => { stacks[p]=stacks[p]||0; pdrops[p]=pdrops[p]||{bags:0,s3:0,s5:0,s9:0,s13:0,s20:0}; });
-  runs.forEach(r => {
-    ['s3','s5','s9','s13','s20'].forEach(k => {
-      const p=(r[k]||'').trim(); if(!p)return;
-      stacks[p]=(stacks[p]||0)+SCROLL_PTS[k];
-      pdrops[p]=pdrops[p]||{bags:0,s3:0,s5:0,s9:0,s13:0,s20:0};
-      pdrops[p][k]++;
+function renderAdmin() {
+  const list = document.getElementById('admin-players-list');
+  if (!state.players.length) {
+    list.innerHTML = '<div style="color:var(--text-dim);font-size:12px;font-style:italic">Nenhum jogador ainda.</div>';
+    return;
+  }
+  list.innerHTML = state.players.map(p => `
+    <div class="admin-player-row">
+      <span class="admin-player-name">${esc(p.name)}</span>
+      <button class="btn btn-danger" style="padding:3px 8px;font-size:8px" onclick="removePlayer('${p.id}')">×</button>
+    </div>
+  `).join('');
+}
+
+// ────────────────────────────────────────────
+// BOSS MODAL
+// ────────────────────────────────────────────
+function openBossModal(bossId = null) {
+  editingBossId = bossId;
+  const title = document.getElementById('boss-modal-title');
+
+  // Player checkboxes
+  const checks = document.getElementById('player-checks');
+  checks.innerHTML = state.players.length
+    ? state.players.map(p => `
+        <label class="check-label">
+          <input type="checkbox" name="player" value="${p.id}">
+          ${esc(p.name)}
+        </label>`).join('')
+    : '<span style="color:var(--text-dim);font-size:13px;font-style:italic">Adicione jogadores no painel admin primeiro.</span>';
+
+  // Loot entries
+  document.getElementById('loot-entries').innerHTML = '';
+
+  // Special pts
+  renderSpecialPts();
+
+  if (bossId) {
+    title.textContent = '✎ Editar Boss';
+    const boss = state.bosses.find(b => b.id === bossId);
+    document.getElementById('boss-date').value = boss.date;
+    document.getElementById('boss-name').value = boss.name;
+    document.getElementById('edit-boss-id').value = bossId;
+
+    // Check players
+    boss.players.forEach(pid => {
+      const cb = checks.querySelector(`input[value="${pid}"]`);
+      if (cb) cb.checked = true;
     });
-    if(r.bag) r.bag.split('\n').forEach(line => {
-      const dash=line.indexOf(' - '); if(dash===-1)return;
-      const pname=line.slice(0,dash).trim(), item=line.slice(dash+3).trim();
-      if(loot[item]!==undefined)loot[item]++; else loot[item]=(loot[item]||0)+1;
-      pdrops[pname]=pdrops[pname]||{bags:0,s3:0,s5:0,s9:0,s13:0,s20:0};
-      stacks[pname]=stacks[pname]||0;
-      pdrops[pname].bags++;
-    });
+
+    // Add loot
+    boss.loot.forEach(l => addLootEntry(l.item, l.player));
+
+    // Special pts
+    if (boss.specialPts) {
+      Object.entries(boss.specialPts).forEach(([pname, pts]) => {
+        const sel = document.getElementById('spts-' + pname);
+        if (sel) sel.value = pts;
+      });
+    }
+  } else {
+    title.textContent = '⚔ Registrar Boss';
+    document.getElementById('boss-date').value = todayStr();
+    document.getElementById('boss-name').value = '';
+    document.getElementById('edit-boss-id').value = '';
+  }
+
+  openModal('boss-modal');
+}
+
+function renderSpecialPts() {
+  const area = document.getElementById('special-pts-area');
+  if (!state.players.length) {
+    area.innerHTML = '<div style="color:var(--text-dim);font-size:12px;font-style:italic">Nenhum jogador cadastrado.</div>';
+    return;
+  }
+  area.innerHTML = state.players.map(p => `
+    <div class="field-row" style="margin-bottom:6px;align-items:center">
+      <div style="flex:1;font-size:14px;color:var(--text)">${esc(p.name)}</div>
+      <select id="spts-${esc(p.name)}" style="width:100px">
+        <option value="0">— 0 pts</option>
+        <option value="3">3 pts</option>
+        <option value="5">5 pts</option>
+        <option value="9">9 pts</option>
+        <option value="13">13 pts</option>
+        <option value="20">20 pts</option>
+      </select>
+    </div>`).join('');
+}
+
+function addLootEntry(item = '', playerName = '') {
+  const container = document.getElementById('loot-entries');
+  const id = uid();
+  const div = document.createElement('div');
+  div.className = 'loot-entry';
+  div.id = 'le-' + id;
+
+  const playerOptions = state.players.map(p =>
+    `<option value="${esc(p.name)}" ${p.name === playerName ? 'selected' : ''}>${esc(p.name)}</option>`
+  ).join('');
+
+  div.innerHTML = `
+    <select id="le-player-${id}">
+      <option value="">— Jogador</option>
+      ${playerOptions}
+    </select>
+    <input type="text" id="le-item-${id}" placeholder="Nome do item…" value="${esc(item)}" style="flex:1">
+    <button class="remove-loot" onclick="document.getElementById('le-${id}').remove()">×</button>
+  `;
+
+  if (playerName) {
+    div.querySelector('select').value = playerName;
+  }
+
+  container.appendChild(div);
+}
+
+function saveBoss() {
+  const date = document.getElementById('boss-date').value;
+  const name = document.getElementById('boss-name').value.trim();
+  if (!date || !name) { toast('Preencha data e nome do boss.'); return; }
+
+  // Collect players
+  const players = [...document.querySelectorAll('#player-checks input:checked')].map(c => c.value);
+
+  // Collect loot
+  const lootEntries = document.querySelectorAll('.loot-entry');
+  const loot = [];
+  lootEntries.forEach(entry => {
+    const id = entry.id.replace('le-', '');
+    const player = document.getElementById('le-player-' + id)?.value || '';
+    const item   = document.getElementById('le-item-' + id)?.value.trim() || '';
+    if (item) loot.push({ item, player });
   });
-  return {stacks,loot,pdrops};
+
+  // Collect special pts
+  const specialPts = {};
+  state.players.forEach(p => {
+    const sel = document.getElementById('spts-' + p.name);
+    if (sel && parseInt(sel.value) > 0) specialPts[p.name] = parseInt(sel.value);
+  });
+
+  const editId = document.getElementById('edit-boss-id').value;
+  if (editId) {
+    const idx = state.bosses.findIndex(b => b.id === editId);
+    state.bosses[idx] = { id: editId, date, name, players, loot, specialPts };
+  } else {
+    state.bosses.unshift({ id: uid(), date, name, players, loot, specialPts });
+  }
+
+  save();
+  renderAll();
+  closeModal('boss-modal');
+  toast(editId ? 'Boss atualizado.' : 'Boss registrado.');
 }
 
-function renderAll() { renderBosses(); hcRender(); }
+function deleteBoss(id) {
+  if (!confirm('Remover este boss?')) return;
+  state.bosses = state.bosses.filter(b => b.id !== id);
+  save();
+  renderAll();
+  toast('Boss removido.');
+}
 
-function renderBosses() { renderTable(); renderStacks(); renderLoot(); renderPlayers(); renderPlayerDatalist(); }
+// ────────────────────────────────────────────
+// RENDER
+// ────────────────────────────────────────────
+function renderAll() {
+  renderBossTable();
+  renderSidePanel();
+  if (isAdmin) renderAdmin();
+}
 
-function renderTable() {
+function renderBossTable() {
   const tbody = document.getElementById('boss-tbody');
-  if (!runs.length) { tbody.innerHTML='<tr><td colspan="9"><div class="empty-state">Nenhuma run registrada.</div></td></tr>'; return; }
-  tbody.innerHTML = runs.map(r => `<tr>
-    <td class="td-date">${r.date}</td>
-    <td class="td-boss">${r.boss}</td>
-    <td class="td-bag">${r.bag||'<span style="color:var(--text-muted)">—</span>'}</td>
-    <td class="td-scroll ${r.s3?'has-name':''}">${r.s3||''}</td>
-    <td class="td-scroll ${r.s5?'has-name':''}">${r.s5||''}</td>
-    <td class="td-scroll ${r.s9?'has-name':''}">${r.s9||''}</td>
-    <td class="td-scroll ${r.s13?'has-name':''}">${r.s13||''}</td>
-    <td class="td-scroll ${r.s20?'has-name':''}">${r.s20||''}</td>
-    ${isAdmin?`<td><button class="btn-del" onclick="delRun(${r.id})">✕</button></td>`:''}
-  </tr>`).join('');
-}
-function renderStacks() {
-  const {stacks}=computeStats();
-  const el=document.getElementById('tab-stacks');
-  const sorted=Object.entries(stacks).sort((a,b)=>b[1]-a[1]);
-  el.innerHTML=sorted.length?sorted.map(([n,v],i)=>`<div class="stack-row">
-    <div style="display:flex;align-items:center"><span class="stack-rank">${i+1}.</span><span>${n}</span></div>
-    <span class="stack-val ${v===0?'zero':''}">${v}</span>
-  </div>`).join(''):'<div class="empty-state">Sem dados.</div>';
-}
-function renderLoot() {
-  const {loot}=computeStats();
-  document.getElementById('tab-loot').innerHTML=Object.entries(loot).sort((a,b)=>b[1]-a[1])
-    .map(([n,q])=>`<div class="loot-row"><span class="loot-name">${n}</span><span class="loot-qty ${q===0?'zero':''}">${q}</span></div>`).join('');
-}
-function renderPlayers() {
-  const {stacks,pdrops}=computeStats();
-  const el=document.getElementById('tab-players');
-  const all=Object.keys(pdrops);
-  if(!all.length){el.innerHTML='<div class="empty-state">Sem dados.</div>';return;}
-  el.innerHTML=all.sort((a,b)=>(stacks[b]||0)-(stacks[a]||0)).map(n=>{
-    const d=pdrops[n];
-    return`<div class="pcard"><div class="pcard-name">${n}</div><div class="pcard-grid">
-      <div class="pstat">Bags <b>${d.bags}</b></div><div class="pstat">Scroll 3pts <b>${d.s3}</b></div>
-      <div class="pstat">Scroll 5pts <b>${d.s5}</b></div><div class="pstat">Scroll 9pts <b>${d.s9}</b></div>
-      <div class="pstat">Scroll 13pts <b>${d.s13}</b></div><div class="pstat">Scroll 20pts <b>${d.s20}</b></div>
-    </div></div>`;
-  }).join('');
-}
-function renderPlayerDatalist() {
-  document.getElementById('player-list').innerHTML = players.map(p=>`<option value="${p}">`).join('');
-}
-function showSideTab(name,el) {
-  ['stacks','loot','players'].forEach(t=>document.getElementById('tab-'+t).style.display=t===name?'block':'none');
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-}
+  const empty = document.getElementById('boss-empty');
 
-function openAddModal() {
-  document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
-  ['f-boss','f-bag','f-s3','f-s5','f-s9','f-s13','f-s20'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('add-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('f-boss').focus(),100);
-}
-function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
+  const sorted = [...state.bosses].sort((a,b) => b.date.localeCompare(a.date));
 
-function saveRun() {
-  if(!isAdmin)return;
-  const raw=document.getElementById('f-date').value; if(!raw){alert('Informe a data.');return;}
-  const d=new Date(raw+'T12:00:00');
-  const date=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
-  runs.unshift({id:nextId++,date,
-    boss:document.getElementById('f-boss').value.trim()||'—',
-    bag:document.getElementById('f-bag').value.trim(),
-    s3:document.getElementById('f-s3').value.trim(),
-    s5:document.getElementById('f-s5').value.trim(),
-    s9:document.getElementById('f-s9').value.trim(),
-    s13:document.getElementById('f-s13').value.trim(),
-    s20:document.getElementById('f-s20').value.trim()
-  });
-  saveLocal(); renderBosses(); closeAddModal();
-}
-function delRun(id) {
-  if(!isAdmin)return;
-  if(!confirm('Remover esta run?'))return;
-  runs=runs.filter(r=>r.id!==id); saveLocal(); renderBosses();
-}
-function openPlayersModal() { renderPlayerTags(); document.getElementById('players-modal').classList.add('open'); }
-function closePlayersModal() { document.getElementById('players-modal').classList.remove('open'); renderBosses(); }
-function renderPlayerTags() {
-  document.getElementById('player-tags').innerHTML=players.map((p,i)=>`<span class="player-tag">${p}<button onclick="removePlayer(${i})">✕</button></span>`).join('');
-}
-function addPlayer() {
-  if(!isAdmin)return;
-  const input=document.getElementById('new-player-input');
-  const name=input.value.trim();
-  if(!name||players.includes(name)){input.focus();return;}
-  players.push(name); input.value=''; saveLocal(); renderPlayerTags(); renderPlayerDatalist();
-}
-function removePlayer(i) {
-  if(!isAdmin)return;
-  players.splice(i,1); saveLocal(); renderPlayerTags();
-}
+  if (!sorted.length) {
+    tbody.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
 
-// ══════════════════════════════════════════════
-//  HOT CUISINE
-// ══════════════════════════════════════════════
-function hcTarget() { return Math.max(1,parseInt(document.getElementById('hc-target')?.value)||900); }
-function hcFilter(f,el) { hcFilterMode=f; document.querySelectorAll('.hc-fb').forEach(b=>b.classList.remove('active')); el.classList.add('active'); hcRender(); }
-function hcReset() {
-  if(!isAdmin||!confirm('Resetar todo o estoque?'))return;
-  hcInv={}; saveLocal(); hcRender();
-}
+  empty.style.display = 'none';
 
-function hcRender() {
-  const target=hcTarget();
-  let nComplete=0,nPartial=0,nMissing=0;
-  RECIPES.forEach(recipe=>{
-    const runsN=hcRc[recipe.id]||target;
-    let allOk=true,anyHave=false;
-    recipe.ingredients.forEach(ing=>{
-      const have=parseInt(hcInv[recipe.id+'_'+ing.name]||0);
-      if(have>=ing.perItem*runsN)anyHave=true; else allOk=false;
-    });
-    if(allOk)nComplete++; else if(anyHave)nPartial++; else nMissing++;
-  });
+  tbody.innerHTML = sorted.map(boss => {
+    const dateDisplay = formatDate(boss.date);
 
-  document.getElementById('hc-summary').innerHTML=`
-    <div class="hc-stat"><div class="hc-stat-label">Alvo</div><div class="hc-stat-val" style="color:var(--gold)">${target.toLocaleString()}</div></div>
-    <div class="hc-stat"><div class="hc-stat-label">Receitas</div><div class="hc-stat-val" style="color:var(--text-dim)">${RECIPES.length}</div></div>
-    <div class="hc-stat"><div class="hc-stat-label">Completo</div><div class="hc-stat-val" style="color:var(--green)">${nComplete}</div></div>
-    <div class="hc-stat"><div class="hc-stat-label">Parcial</div><div class="hc-stat-val" style="color:var(--orange)">${nPartial}</div></div>
-    <div class="hc-stat"><div class="hc-stat-label">Faltando</div><div class="hc-stat-val" style="color:var(--red)">${nMissing}</div></div>`;
+    const lootHtml = boss.loot.length
+      ? `<span class="loot-tag">${boss.loot.map(l =>
+          `<span class="loot-line">${l.player ? `<strong>${esc(l.player)}</strong> — ` : ''}${esc(l.item)}</span>`
+        ).join('')}</span>`
+      : `<span class="empty-cell">—</span>`;
 
-  const container=document.getElementById('hc-recipes');
-  container.innerHTML='';
-
-  RECIPES.forEach((recipe,ri)=>{
-    const runsN=hcRc[recipe.id]||target;
-    let allOk=true,anyHave=false;
-    const ings=recipe.ingredients.map(ing=>{
-      const need=ing.perItem*runsN;
-      const have=parseInt(hcInv[recipe.id+'_'+ing.name]||0);
-      const lack=need-have;
-      if(lack>0)allOk=false;
-      if(have>0)anyHave=true;
-      return{...ing,need,have,lack};
-    });
-    const st=allOk?'complete':(anyHave?'partial':'missing');
-    if(hcFilterMode==='complete'&&st!=='complete')return;
-    if(hcFilterMode==='missing'&&st==='complete')return;
-    const pillClass=allOk?'ok':(st==='partial'?'partial':'missing');
-    const pillLabel=allOk?'Completo':(st==='partial'?'Parcial':'Faltando');
-    const isOpen=hcOpen[recipe.id]!==false;
-
-    const ingRows=ings.map(ing=>{
-      const pct=Math.min(100,ing.need>0?Math.round(ing.have/ing.need*100):100);
-      const barColor=pct>=100?'#3a6e4a':pct>=50?'#7a5020':'#7a2020';
-      const lackClass=ing.lack<=0?'ok':'bad';
-      const lackLabel=ing.lack<=0?'✓':'-'+ing.lack.toLocaleString();
-      const safeName=ing.name.replace(/'/g,"\\'");
-      const haveCell=isAdmin
-        ?`<input type="number" class="ing-have-input" value="${ing.have}" min="0" onchange="hcSetInv('${recipe.id}','${safeName}',this.value)">`
-        :`<span style="text-align:center;display:block">${ing.have.toLocaleString()}</span>`;
-      return`<tr>
-        <td class="ing-name">${ing.name}</td>
-        <td class="ing-center">${ing.perItem}</td>
-        <td class="ing-need">${ing.need.toLocaleString()}</td>
-        <td style="text-align:center">${haveCell}</td>
-        <td class="ing-lack ${lackClass}">${lackLabel}</td>
-        <td><div class="ing-bar-bg"><div class="ing-bar-fill" style="width:${pct}%;background:${barColor}"></div></div></td>
-      </tr>`;
+    // Points per column
+    const ptCols = [3,5,9,13,20].map(pts => {
+      const winners = Object.entries(boss.specialPts || {})
+        .filter(([,v]) => v === pts)
+        .map(([k]) => k);
+      return `<td class="points-cell pts-${pts}">${winners.length ? winners.map(w => `<span style="color:var(--gold)">${esc(w)}</span>`).join('<br>') : '<span class="empty-cell">—</span>'}</td>`;
     }).join('');
 
-    const runsCell=isAdmin
-      ?`<input type="number" class="recipe-runs-input" value="${runsN}" min="1" onchange="hcSetRuns('${recipe.id}',this.value)" onclick="event.stopPropagation()">`
-      :`<span style="color:var(--gold);font-family:'Cinzel',serif;font-size:13px">${runsN.toLocaleString()}</span>`;
+    const actionsHtml = isAdmin
+      ? `<td class="action-cell" style="white-space:nowrap">
+           <button class="btn" style="padding:3px 8px;font-size:9px;margin-right:4px" onclick="openBossModal('${boss.id}')">✎</button>
+           <button class="btn btn-danger" style="padding:3px 8px;font-size:9px" onclick="deleteBoss('${boss.id}')">×</button>
+         </td>`
+      : `<td class="action-cell" style="display:none"></td>`;
 
-    const card=document.createElement('div');
-    card.className=`recipe-card st-${st}`;
-    card.innerHTML=`
-      <div class="recipe-head" onclick="hcToggle('${recipe.id}')">
-        <div>
-          <div class="recipe-title">${ri+1}. ${recipe.name}</div>
-          <div class="recipe-effect">${recipe.effect}</div>
-        </div>
-        <div class="recipe-meta">
-          <div class="recipe-runs-wrap" onclick="event.stopPropagation()">RUNS: ${runsCell}</div>
-          <span class="rpill ${pillClass}">${pillLabel}</span>
-          <span class="rchevron" id="chv-${recipe.id}">${isOpen?'▲':'▼'}</span>
-        </div>
-      </div>
-      <div class="recipe-body ${isOpen?'open':''}" id="rb-${recipe.id}">
-        <div style="overflow-x:auto">
-          <table class="ing-table">
-            <thead><tr>
-              <th>Ingrediente</th><th style="text-align:center">Por run</th>
-              <th style="text-align:center">Necessário</th><th style="text-align:center">Tenho</th>
-              <th style="text-align:center">Falta</th><th>Progresso</th>
-            </tr></thead>
-            <tbody>${ingRows}</tbody>
-          </table>
-        </div>
-      </div>`;
-    container.appendChild(card);
+    return `
+      <tr>
+        <td class="date">${dateDisplay}</td>
+        <td class="boss-name">${esc(boss.name)}</td>
+        <td>${lootHtml}</td>
+        ${ptCols}
+        ${actionsHtml}
+      </tr>`;
+  }).join('');
+}
+
+function renderSidePanel() {
+  renderStacksTab();
+  renderLootTab();
+  renderPlayersTab();
+}
+
+function renderStacksTab() {
+  const container = document.getElementById('stacks-list');
+
+  // Calculate points per player
+  const pts = {};
+  state.players.forEach(p => pts[p.name] = 0);
+
+  state.bosses.forEach(boss => {
+    // Loot stacks
+    boss.loot.forEach(l => {
+      if (l.player && pts[l.player] !== undefined) {
+        pts[l.player] += 1; // 1 stack per item received
+      }
+    });
+    // Special pts
+    Object.entries(boss.specialPts || {}).forEach(([pname, v]) => {
+      if (pts[pname] !== undefined) pts[pname] += v;
+    });
+  });
+
+  const sorted = Object.entries(pts).sort((a,b) => b[1]-a[1]);
+
+  if (!sorted.length) {
+    container.innerHTML = '<div class="empty-state">Nenhum dado ainda.</div>';
+    return;
+  }
+
+  container.innerHTML = sorted.map(([name, p], i) => `
+    <div class="player-row">
+      <span class="player-rank">${i+1}</span>
+      <span class="player-name">${esc(name)}</span>
+      <span class="player-pts">${p}</span>
+    </div>`).join('');
+}
+
+function renderLootTab() {
+  const container = document.getElementById('loot-list');
+  const allLoot = [];
+
+  state.bosses.forEach(boss => {
+    boss.loot.forEach(l => {
+      allLoot.push({ ...l, boss: boss.name, date: boss.date });
+    });
+  });
+
+  allLoot.sort((a,b) => b.date.localeCompare(a.date));
+
+  if (!allLoot.length) {
+    container.innerHTML = '<div class="empty-state">Nenhum loot registrado.</div>';
+    return;
+  }
+
+  container.innerHTML = allLoot.map(l => `
+    <div class="loot-item">
+      <div class="loot-item-name">${esc(l.item)}</div>
+      <div class="loot-item-meta">${l.player ? esc(l.player) + ' · ' : ''}${esc(l.boss)} · ${formatDate(l.date)}</div>
+    </div>`).join('');
+}
+
+function renderPlayersTab() {
+  const container = document.getElementById('players-list');
+
+  if (!state.players.length) {
+    container.innerHTML = '<div class="empty-state">Nenhum jogador cadastrado.</div>';
+    return;
+  }
+
+  container.innerHTML = state.players.map(p => `
+    <div class="player-badge">
+      <div class="player-avatar">${p.name.charAt(0).toUpperCase()}</div>
+      <span style="font-size:15px;color:var(--text)">${esc(p.name)}</span>
+    </div>`).join('');
+}
+
+// ────────────────────────────────────────────
+// VIEWS / TABS
+// ────────────────────────────────────────────
+function setView(view, btn) {
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function setSideTab(tab, btn) {
+  currentSideTab = tab;
+  document.querySelectorAll('.side-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['stacks','loot','players'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none';
   });
 }
 
-function hcToggle(id) {
-  const body=document.getElementById('rb-'+id);
-  const chv=document.getElementById('chv-'+id);
-  const open=body.classList.contains('open');
-  body.classList.toggle('open',!open);
-  chv.textContent=open?'▼':'▲';
-  hcOpen[id]=!open;
-}
-function hcSetInv(rid,ing,val) {
-  if(!isAdmin)return;
-  hcInv[rid+'_'+ing]=Math.max(0,parseInt(val)||0);
-  saveLocal(); hcRender();
-}
-function hcSetRuns(rid,val) {
-  if(!isAdmin)return;
-  hcRc[rid]=Math.max(1,parseInt(val)||1);
-  saveLocal(); hcRender();
+// ────────────────────────────────────────────
+// ADMIN CLEAR
+// ────────────────────────────────────────────
+function clearAllData() {
+  if (!confirm('Isso apagará TODOS os bosses e dados. Continuar?')) return;
+  state = { bosses: [], players: state.players };
+  save();
+  renderAll();
+  toast('Dados apagados.');
 }
 
-// ══════════════════════════════════════════════
-//  FECHAR MODAIS AO CLICAR FORA
-// ══════════════════════════════════════════════
-['add-modal','players-modal','admin-login-modal'].forEach(id=>{
-  document.getElementById(id).addEventListener('click',e=>{
-    if(e.target===e.currentTarget) document.getElementById(id).classList.remove('open');
+// ────────────────────────────────────────────
+// MODAL HELPERS
+// ────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
   });
 });
 
-// ══════════════════════════════════════════════
-//  INICIALIZAR — visitantes carregam dados embutidos
-// ══════════════════════════════════════════════
-loadData();
+// ────────────────────────────────────────────
+// UTILS
+// ────────────────────────────────────────────
+function uid() { return Math.random().toString(36).slice(2,9) + Date.now().toString(36); }
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function todayStr() { return new Date().toISOString().slice(0,10); }
+function formatDate(s) {
+  if (!s) return '—';
+  const [y,m,d] = s.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ────────────────────────────────────────────
+// INIT
+// ────────────────────────────────────────────
+load();
 renderAll();
 </script>
 </body>
